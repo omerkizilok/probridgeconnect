@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProBridge Connect — Exclusive Bridge Partnership & Sponsorship</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #FAF9F6;
+      color: #1A1F1D;
+    }
+    .font-serif-luxury {
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .gold-border {
+      border-color: rgba(180, 148, 90, 0.35);
+    }
+    .emerald-bg {
+      background-color: #122921;
+    }
+    .gold-text {
+      color: #9E7E43;
+    }
+    .gold-bg {
+      background-color: #9E7E43;
+    }
+    .gold-bg:hover {
+      background-color: #876A35;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-[#122921] selection:text-white">
+
+  <!-- Üst Menü / Header -->
+  <header class="sticky top-0 z-40 bg-[#FAF9F6]/90 backdrop-blur-md border-b border-stone-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full emerald-bg flex items-center justify-center text-[#D4AF37] font-serif-luxury text-xl font-bold shadow-sm">
+          ♠
+        </div>
+        <div>
+          <span class="font-serif-luxury text-2xl font-bold tracking-tight text-[#122921]">ProBridge</span>
+          <span class="text-xs uppercase tracking-[0.2em] text-stone-500 ml-1.5 font-medium">Connect</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 sm:gap-5">
+        <!-- Dil Değiştirici -->
+        <div class="flex items-center bg-stone-200/70 rounded-full p-0.5 text-xs font-medium">
+          <button id="btn-tr" onclick="setLang('tr')" class="px-3 py-1 rounded-full bg-[#122921] text-white transition">TR</button>
+          <button id="btn-en" onclick="setLang('en')" class="px-3 py-1 rounded-full text-stone-600 hover:text-stone-900 transition">EN</button>
+        </div>
+
+        <!-- Kullanıcı Durumu / Giriş Butonu -->
+        <div id="auth-nav-area">
+          <button onclick="openAuthModal()" class="text-xs sm:text-sm font-medium px-4 py-2 rounded-full border border-[#122921] text-[#122921] hover:bg-[#122921] hover:text-white transition" data-i18n="navJoin">
+            Profesyonel Girişi / Kayıt
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Bölümü -->
+  <section class="relative overflow-hidden border-b border-stone-200/70 bg-gradient-to-b from-[#F4F1EA] to-[#FAF9F6] py-16 sm:py-24">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <p class="text-xs uppercase tracking-[0.25em] gold-text font-semibold mb-4" data-i18n="heroBadge">
+        PROFESYONEL BRİÇ PARTNERLİĞİ VE SPONSORLUK PLATFORMU
+      </p>
+      <h1 class="font-serif-luxury text-4xl sm:text-6xl font-semibold text-[#122921] leading-tight mb-6" data-i18n="heroTitle">
+        Ulusal ve Uluslararası Turnuvalar İçin Profesyonel Partnerlikler
+      </h1>
+      <p class="text-stone-600 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed font-light" data-i18n="heroSubtitle">
+        Tbf turnuva/festivalleri ve uluslararası şampiyonalarda rekabet etmek isteyen sponsorlar ile Türkiye'nin seçkin briç profesyonellerini buluşturan özel ağ.
+      </p>
+    </div>
+  </section>
+
+  <!-- Turnuva Filtre Barı -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-200 pb-6">
+      <div>
+        <h2 class="font-serif-luxury text-2xl sm:text-3xl font-semibold text-[#122921]" data-i18n="rosterTitle">Profesyonel Kadro</h2>
+        <p class="text-xs sm:text-sm text-stone-500 mt-1" data-i18n="rosterSub">Turnuva seçerek müsait olan profesyonelleri filtreleyebilirsiniz.</p>
+      </div>
+
+      <div class="flex flex-wrap gap-2" id="tournament-filters">
+        <!-- Dinamik yüklenecek -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Oyuncu Kartları Grid -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+    <div id="loading-indicator" class="text-center py-12 text-stone-500 text-sm">
+      Yükleniyor...
+    </div>
+    <div id="players-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+      <!-- Kartlar JS ile buraya basılacak -->
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="emerald-bg text-stone-300 py-12 border-t border-stone-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-2.5">
+        <span class="text-[#D4AF37] font-serif-luxury text-xl">♠</span>
+        <span class="font-serif-luxury text-xl text-white font-semibold">ProBridge Connect</span>
+      </div>
+      <p class="text-xs text-stone-400" data-i18n="footerNote">
+        © 2026 ProBridge Connect. Tüm görüşmeler gizlilik esasına göre doğrudan profesyonel ve sponsor arasında yürütülür.
+      </p>
+    </div>
+  </footer>
+
+  <!-- 1. MODAL: Oyuncu Detay Profili -->
+  <div id="profile-modal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#FAF9F6] rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border gold-border p-6 sm:p-8 relative">
+      <button onclick="closeModal('profile-modal')" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-stone-200/80 hover:bg-stone-300 flex items-center justify-center text-stone-700">✕</button>
+      <div id="profile-modal-content"></div>
+    </div>
+  </div>
+
+  <!-- 3. MODAL: Profesyonel Giriş / Kayıt & Profil Düzenleme -->
+  <div id="auth-modal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#FAF9F6] rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border gold-border p-6 sm:p-8 relative">
+      <button onclick="closeModal('auth-modal')" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-stone-200/80 hover:bg-stone-300 flex items-center justify-center text-stone-700">✕</button>
+
+      <!-- Giriş / Kayıt Sekmeleri -->
+      <div id="auth-forms-container">
+        <div class="flex gap-4 border-b border-stone-200 pb-3 mb-6">
+          <button id="tab-login" onclick="switchAuthTab('login')" class="text-sm font-semibold text-[#122921] border-b-2 border-[#122921] pb-1">Giriş Yap</button>
+          <button id="tab-signup" onclick="switchAuthTab('signup')" class="text-sm font-medium text-stone-500 pb-1">Yeni Profesyonel Kaydı</button>
+        </div>
+
+        <!-- Giriş Formu -->
+        <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-medium text-stone-700 mb-1">E-posta</label>
+            <input type="email" id="login-email" required class="w-full px-3.5 py-2.5 rounded-lg border border-stone-300 bg-white text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-stone-700 mb-1">Şifre</label>
+            <input type="password" id="login-password" required class="w-full px-3.5 py-2.5 rounded-lg border border-stone-300 bg-white text-sm">
+          </div>
+          <button type="submit" class="w-full py-3 rounded-lg emerald-bg text-white text-sm font-medium hover:opacity-95 transition">Giriş Yap</button>
+        </form>
+
+        <!-- Kayıt Formu -->
+        <form id="signup-form" onsubmit="handleSignup(event)" class="space-y-4 hidden">
+          <div class="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs leading-relaxed">
+            ℹ️ Kayıt olduktan sonra profiliniz yönetici onayından geçene kadar bekleme modunda kalacak, onaylandığında kadroda yayınlanacaktır.
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-stone-700 mb-1">Profil Fotoğrafı (İsteğe bağlı)</label>
+            <input type="file" id="reg-photo" accept="image/*" class="w-full text-xs text-stone-600 file:mr-3 file:py-2 file:px-3.5 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-[#122921] file:text-white hover:file:opacity-90">
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-stone-700 mb-1">Ad Soyad *</label>
+              <input type="text" id="reg-name" required placeholder="Örn: Ömer Kızılok" class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-stone-700 mb-1">Şehir</label>
+              <input type="text" id="reg-city" value="Ankara" class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm">
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-stone-700 mb-1">E-posta *</label>
+              <input type="email" id="reg-email" required class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-stone-700 mb-1">Şifre (En az 6 karakter) *</label>
+              <input type="password" id="reg-password" minlength="6" required class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm">
+            </div>
+          </div>
+          <!-- Şifre Tekrar Alanı Eklendi -->
+          <div>
+            <label class="block text-xs font-medium text-stone-700 mb-1">Şifre Tekrarı *</label>
+            <input type="password" id="reg-password-confirm" minlength="6" required placeholder="Şifrenizi tekrar girin" class="w-full px-3.5 py-2.5 rounded-lg border border-stone-300 bg-white text-sm">
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-stone-700 mb-1">Unvan (TR / EN)</label>
+              <input type="text" id="reg-title" placeholder="Milli Oyuncu / WBF Master" class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-stone-700 mb-1">BBO Kullanıcı Adı</label>
+              <input type="text" id="reg-bbo" placeholder="Örn: gravity" class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-stone-700 mb-1">WhatsApp Numarası (Örn: 90532xxxxxxx) *</label>
+            <input type="text" id="reg-whatsapp" required placeholder="905321234567" class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-stone-700 mb-1">Oynanan Sistem</label>
+            <input type="text" id="reg-system" value="2/1 GF, UDCA" class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-stone-700 mb-1">Kısa Biyografi (Türkçe)</label>
+            <textarea id="reg-bio-tr" rows="2" placeholder="Kariyer özeti ve oyun tarzı..." class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-stone-700 mb-1">Short Bio (English)</label>
+            <textarea id="reg-bio-en" rows="2" placeholder="Brief career summary and style..." class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-stone-700 mb-1">Önemli Başarılar (Her satıra bir derece)</label>
+            <textarea id="reg-ach" rows="2" placeholder="Avrupa Şampiyonası Gümüş Madalya&#10;Türkiye Şampiyonluğu" class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm"></textarea>
+          </div>
+          <button type="submit" id="btn-signup-submit" class="w-full py-3 rounded-lg emerald-bg text-white text-sm font-medium hover:opacity-95 transition">Kaydı Tamamla ve Onaya Gönder</button>
+        </form>
+        <p id="auth-error" class="mt-3 text-xs text-red-600 hidden"></p>
+      </div>
+
+      <!-- Giriş Yapmış Kullanıcının Paneli -->
+      <div id="dashboard-container" class="hidden">
+        <div class="flex items-center justify-between border-b border-stone-200 pb-4 mb-5">
+          <div>
+            <p class="text-xs uppercase tracking-widest gold-text font-semibold">PROFESYONEL PANELİ</p>
+            <h3 id="dash-user-name" class="font-serif-luxury text-2xl font-semibold text-[#122921]">Hoş Geldiniz</h3>
+          </div>
+          <button onclick="handleLogout()" class="text-xs text-red-600 hover:underline">Çıkış Yap</button>
+        </div>
+
+        <div id="approval-notice" class="hidden mb-4 p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs">
+          ⏳ Profiliniz henüz yönetici onayından geçmemiştir. Onaylandığında kadroda yayınlanacaktır.
+        </div>
+
+        <form onsubmit="saveProfileUpdates(event)" class="space-y-4">
+          <!-- Profil Fotoğrafı Önizleme ve Yükleme -->
+          <div class="flex items-center gap-4 p-3 rounded-xl bg-white border border-stone-200">
+            <div id="edit-avatar-preview" class="w-14 h-14 rounded-full emerald-bg text-[#D4AF37] font-serif-luxury text-xl font-bold flex items-center justify-center shrink-0 overflow-hidden border border-[#9E7E43]/40">
+              ÖK
+            </div>
+            <div class="flex-1">
+              <label class="block text-xs font-semibold text-[#122921] mb-1">Profil Fotoğrafı</label>
+              <input type="file" id="edit-photo" accept="image/*" onchange="previewSelectedPhoto(event)" class="w-full text-xs text-stone-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-[#122921] file:text-white hover:file:opacity-90 cursor-pointer">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-stone-700 mb-1">Ad Soyad</label>
+              <input type="text" id="edit-name" required class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-stone-700 mb-1">Şehir</label>
+              <input type="text" id="edit-city" class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm">
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-stone-700 mb-1">Unvan</label>
+              <input type="text" id="edit-title" class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-stone-700 mb-1">WhatsApp Numarası (Örn: 90532xxxxxxx)</label>
+              <input type="text" id="edit-whatsapp" required class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-stone-700 mb-1">Sistem</label>
+            <input type="text" id="edit-system" class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-stone-700 mb-1">Biyografi (TR)</label>
+            <textarea id="edit-bio-tr" rows="2" class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-stone-700 mb-1">Biography (EN)</label>
+            <textarea id="edit-bio-en" rows="2" class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-stone-700 mb-1">Başarılar (Her satıra bir derece)</label>
+            <textarea id="edit-ach" rows="2" class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm"></textarea>
+          </div>
+
+          <div class="pt-2">
+            <label class="block text-xs font-semibold text-[#122921] mb-2">Turnuva Müsaitlik Durumunuz:</label>
+            <div id="edit-tournament-checkboxes" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+              <!-- Dinamik doldurulacak -->
+            </div>
+          </div>
+
+          <button type="submit" id="btn-save-profile" class="w-full py-3 rounded-lg emerald-bg text-white text-sm font-medium hover:opacity-95 transition">
+            Değişiklikleri Kaydet
+          </button>
+        </form>
+        <p id="dash-msg" class="mt-3 text-xs text-emerald-700 hidden"></p>
+
+        <!-- Şifre Değiştirme Alanı -->
+        <div class="mt-6 pt-6 border-t border-stone-200">
+          <h4 class="text-xs uppercase tracking-wider text-stone-500 font-semibold mb-3">Güvenlik / Şifre Değiştirme</h4>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-medium text-stone-700 mb-1">Yeni Şifre (En az 6 karakter)</label>
+              <input type="password" id="new-password" placeholder="••••••••" minlength="6" class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm">
+            </div>
+            <button type="button" onclick="updatePassword()" class="py-2 px-4 rounded-lg border border-[#122921] text-[#122921] text-xs font-medium hover:bg-[#122921] hover:text-white transition">
+              Şifreyi Güncelle
+            </button>
+          </div>
+          <p id="password-msg" class="mt-2 text-xs hidden"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://jqrucqipegoynmkmxkqh.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_qCqQDVWrIHDjucBzUC5QYQ_Z-HvJGRQ';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let currentLang = 'tr';
+    let currentFilter = 'all';
+    let allPlayers = [];
+    let allTournaments = [];
+    let currentUser = null;
+    let currentUserProfile = null;
+
+    const fallbackTournaments = [
+      { id: 't1', name_tr: '5-6 Aralık İnönü İkili Turnuvası/ANKARA', name_en: 'Dec Inonu Pairs' },
+      { id: 't2', name_tr: '9-11 Aralık Mix Takımlar Şampiyonası/İSTANBUL', name_en: 'Dec Mix Teams' }
+    ];
+
+    const fallbackPlayers = [
+      {
+        id: 'demo-1',
+        name_tr: 'Ömer Kızılok',
+        name_en: 'Ömer Kızılok',
+        city: 'Ankara',
+        title_tr: 'Milli Oyuncu & Uluslararası Koç',
+        title_en: 'National Team Player & Int. Coach',
+        system: '2/1 GF, Gazzilli, UDCA',
+        bbo: 'gravity',
+        whatsapp: '905320000000',
+        avatar_url: null,
+        is_approved: true,
+        bio_tr: '2013 yılından bu yana tam zamanlı profesyonel briç oyuncusu ve eğitmeni.',
+        bio_en: 'Full-time bridge professional and coach since 2013.',
+        achievements_tr: ['11. Avrupa Açık Takımlar Şampiyonası Gümüş Madalya'],
+        achievements_en: ['11th European Open Teams Silver Medal'],
+        availability: { t1: true, t2: true }
+      }
+    ];
+
+    const i18n = {
+      tr: {
+        navJoin: 'Profesyonel Girişi / Kayıt',
+        navMyPanel: 'Profilim',
+        heroBadge: 'PROFESYONEL BRİÇ PARTNERLİĞİ VE SPONSORLUK PLATFORMU',
+        heroTitle: 'Ulusal ve Uluslararası Turnuvalar İçin Profesyonel Partnerlikler',
+        heroSubtitle: 'Tbf turnuva/festivalleri ve uluslararası şampiyonalarda rekabet etmek isteyen sponsorlar ile Türkiye\'nin seçkin briç profesyonellerini buluşturan özel ağ.',
+        rosterTitle: 'Profesyonel Kadro',
+        rosterSub: 'Turnuva seçerek müsait olan profesyonelleri filtreleyebilirsiniz.',
+        filterAll: 'Tümü',
+        btnProfile: 'Profili İncele',
+        btnWhatsApp: 'WhatsApp İletişim',
+        footerNote: '© 2026 ProBridge Connect. Tüm görüşmeler gizlilik esasına göre doğrudan profesyonel ve sponsor arasında yürütülür.'
+      },
+      en: {
+        navJoin: 'Pro Login / Join',
+        navMyPanel: 'My Profile',
+        heroBadge: 'PROFESSIONAL BRIDGE PARTNERSHIP & SPONSORSHIP PLATFORM',
+        heroTitle: 'Distinguished Partnerships for International Tournaments',
+        heroSubtitle: 'A private network connecting discerning sponsors with elite Turkish and international bridge professionals for federated and global championships.',
+        rosterTitle: 'Professional Roster',
+        rosterSub: 'Filter available professionals by selecting your target tournament.',
+        filterAll: 'All Professionals',
+        btnProfile: 'View Profile',
+        btnWhatsApp: 'WhatsApp Chat',
+        footerNote: '© 2026 ProBridge Connect. All discussions are conducted privately and directly between sponsor and professional.'
+      }
+    };
+
+    function resizeImage(file, maxSize = 400) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+            if (width > height) {
+              if (width > maxSize) {
+                height *= maxSize / width;
+                width = maxSize;
+              }
+            } else {
+              if (height > maxSize) {
+                width *= maxSize / height;
+                height = maxSize;
+              }
+            }
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.85);
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function uploadAvatar(file, userId) {
+      const resizedBlob = await resizeImage(file, 400);
+      const filePath = `${userId}-${Date.now()}.jpg`;
+      const { error } = await supabaseClient.storage
+        .from('avatars')
+        .upload(filePath, resizedBlob, { contentType: 'image/jpeg', upsert: true });
+
+      if (error) throw error;
+      const { data } = supabaseClient.storage.from('avatars').getPublicUrl(filePath);
+      return data.publicUrl;
+    }
+
+    function previewSelectedPhoto(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      const previewEl = document.getElementById('edit-avatar-preview');
+      previewEl.innerHTML = `<img src="${url}" alt="Avatar" class="w-full h-full object-cover">`;
+    }
+
+    function renderAvatarHTML(player, sizeClass = 'w-12 h-12', textClass = 'text-lg') {
+      const name = player.name_tr || 'Pro';
+      const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      if (player.avatar_url) {
+        return `<div class="${sizeClass} rounded-full overflow-hidden shrink-0 border border-[#9E7E43]/40 shadow-sm bg-stone-200">
+          <img src="${player.avatar_url}" alt="${name}" class="w-full h-full object-cover">
+        </div>`;
+      }
+      return `<div class="${sizeClass} rounded-full emerald-bg text-[#D4AF37] font-serif-luxury ${textClass} font-bold flex items-center justify-center shrink-0">
+        ${initials}
+      </div>`;
+    }
+
+    function setLang(lang) {
+      currentLang = lang;
+      document.getElementById('btn-tr').className = lang === 'tr' ? 'px-3 py-1 rounded-full bg-[#122921] text-white transition' : 'px-3 py-1 rounded-full text-stone-600 hover:text-stone-900 transition';
+      document.getElementById('btn-en').className = lang === 'en' ? 'px-3 py-1 rounded-full bg-[#122921] text-white transition' : 'px-3 py-1 rounded-full text-stone-600 hover:text-stone-900 transition';
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (i18n[lang][key]) el.textContent = i18n[lang][key];
+      });
+      updateAuthNav();
+      renderTournamentsUI();
+      renderPlayers();
+    }
+
+    function filterTournament(tKey) {
+      currentFilter = tKey;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.className = 'filter-btn px-4 py-2 rounded-full text-xs font-medium bg-white border border-stone-300 text-stone-700 hover:border-[#122921] transition';
+      });
+      const activeBtn = document.querySelector(`.filter-btn[data-filter="${tKey}"]`);
+      if (activeBtn) {
+        activeBtn.className = 'filter-btn px-4 py-2 rounded-full text-xs font-medium bg-[#122921] text-white transition';
+      }
+      renderPlayers();
+    }
+
+    async function initApp() {
+      try {
+        const { data: tData, error: tErr } = await supabaseClient
+          .from('tournaments')
+          .select('*')
+          .order('display_order', { ascending: true });
+
+        if (!tErr && tData && tData.length > 0) {
+          allTournaments = tData;
+        } else {
+          allTournaments = fallbackTournaments;
+        }
+      } catch (e) {
+        allTournaments = fallbackTournaments;
+      }
+
+      renderTournamentsUI();
+      await loadPlayers();
+      checkSession();
+    }
+
+    function renderTournamentsUI() {
+      const filterBar = document.getElementById('tournament-filters');
+      let filterHtml = `<button data-filter="all" class="filter-btn px-4 py-2 rounded-full text-xs font-medium transition ${currentFilter === 'all' ? 'bg-[#122921] text-white' : 'bg-white border border-stone-300 text-stone-700 hover:border-[#122921]'}">${currentLang === 'tr' ? 'Tümü' : 'All Professionals'}</button>`;
+      
+      allTournaments.forEach(t => {
+        const tName = currentLang === 'tr' ? t.name_tr : t.name_en;
+        const isActive = currentFilter === t.id;
+        const btnClass = isActive 
+          ? 'filter-btn px-4 py-2 rounded-full text-xs font-medium bg-[#122921] text-white transition' 
+          : 'filter-btn px-4 py-2 rounded-full text-xs font-medium bg-white border border-stone-300 text-stone-700 hover:border-[#122921] transition';
+        
+        filterHtml += `<button data-filter="${t.id}" class="${btnClass}">${tName}</button>`;
+      });
+      filterBar.innerHTML = filterHtml;
+
+      filterBar.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterTournament(btn.getAttribute('data-filter'));
+        });
+      });
+
+      const chkContainer = document.getElementById('edit-tournament-checkboxes');
+      if (chkContainer) {
+        chkContainer.innerHTML = allTournaments.map(t => {
+          const tName = currentLang === 'tr' ? t.name_tr : t.name_en;
+          return `<label class="flex items-center gap-2 p-2.5 rounded-lg border border-stone-200 bg-white cursor-pointer">
+            <input type="checkbox" data-tid="${t.id}" class="tour-chk accent-[#122921]"> ${tName}
+          </label>`;
+        }).join('');
+      }
+
+      if (currentUserProfile) {
+        populateDashboard();
+      }
+    }
+
+    async function loadPlayers() {
+      document.getElementById('loading-indicator').classList.remove('hidden');
+      try {
+        const { data, error } = await supabaseClient
+          .from('profiles')
+          .select('*')
+          .eq('is_approved', true)
+          .order('created_at', { ascending: true });
+
+        if (!error && data && data.length > 0) {
+          allPlayers = data;
+        } else {
+          allPlayers = fallbackPlayers.filter(p => p.is_approved);
+        }
+      } catch (e) {
+        allPlayers = fallbackPlayers.filter(p => p.is_approved);
+      }
+      document.getElementById('loading-indicator').classList.add('hidden');
+      renderPlayers();
+    }
+
+    function renderPlayers() {
+      const grid = document.getElementById('players-grid');
+      grid.innerHTML = '';
+
+      const filtered = allPlayers.filter(p => {
+        if (currentFilter === 'all') return true;
+        return p.availability && p.availability[currentFilter] === true;
+      });
+
+      filtered.forEach(player => {
+        const name = currentLang === 'tr' ? player.name_tr : (player.name_en || player.name_tr);
+        const title = currentLang === 'tr' ? (player.title_tr || '') : (player.title_en || player.title_tr || '');
+        const bio = currentLang === 'tr' ? (player.bio_tr || '') : (player.bio_en || player.bio_tr || '');
+        const avail = player.availability || {};
+        const waNum = player.whatsapp || '905320000000';
+        const waMsg = encodeURIComponent(`Merhaba ${name}, ProBridge Connect üzerinden ulaşıyorum. Turnuva partnerliği hakkında görüşmek istiyorum.`);
+        const waLink = `https://wa.me/${waNum}?text=${waMsg}`;
+
+        const tTags = allTournaments.map(t => {
+          const isAvail = avail[t.id];
+          const fullName = currentLang === 'tr' ? t.name_tr : t.name_en;
+          let shortLabel = fullName.split('/')[0].trim();
+          if (shortLabel.toLowerCase().includes('aralık')) shortLabel = shortLabel.replace(/aralık/gi, 'Ara');
+          else if (shortLabel.toLowerCase().includes('ocak')) shortLabel = shortLabel.replace(/ocak/gi, 'Oca');
+          else if (shortLabel.toLowerCase().includes('şubat')) shortLabel = shortLabel.replace(/şubat/gi, 'Şub');
+          else if (shortLabel.toLowerCase().includes('mart')) shortLabel = shortLabel.replace(/mart/gi, 'Mar');
+          else if (shortLabel.toLowerCase().includes('nisan')) shortLabel = shortLabel.replace(/nisan/gi, 'Nis');
+          else if (shortLabel.toLowerCase().includes('mayıs')) shortLabel = shortLabel.replace(/mayıs/gi, 'May');
+          else if (shortLabel.toLowerCase().includes('haziran')) shortLabel = shortLabel.replace(/haziran/gi, 'Haz');
+
+          return `<span class="px-2 py-0.5 rounded text-[11px] font-medium ${isAvail ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-stone-100 text-stone-400 line-through'}">${shortLabel}</span>`;
+        }).join('');
+
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-2xl border border-stone-200/90 hover:border-[#9E7E43]/60 shadow-sm hover:shadow-md transition p-6 flex flex-col justify-between';
+        card.innerHTML = `
+          <div>
+            <div class="flex items-start justify-between gap-4 mb-4">
+              <div class="flex items-center gap-3.5">
+                ${renderAvatarHTML(player, 'w-14 h-14', 'text-lg')}
+                <div>
+                  <h3 onclick="openProfileModal('${player.id}')" class="font-serif-luxury text-2xl font-semibold text-[#122921] hover:text-[#9E7E43] cursor-pointer transition leading-snug">${name}</h3>
+                  <p class="text-xs text-stone-500">${player.city || 'Türkiye'} ${player.bbo ? `• BBO: <span class="font-medium text-stone-700">${player.bbo}</span>` : ''}</p>
+                </div>
+              </div>
+            </div>
+            <p class="text-xs font-semibold gold-text uppercase tracking-wider mb-2">${title}</p>
+            <p class="text-sm text-stone-600 line-clamp-2 mb-4 leading-relaxed">${bio}</p>
+            <div class="mb-4">
+              <p class="text-[11px] text-stone-400 uppercase tracking-wider mb-1.5">${currentLang === 'tr' ? 'Sistem' : 'System'}: <span class="text-stone-700 font-medium">${player.system || '2/1 GF'}</span></p>
+              <div class="flex flex-wrap gap-1.5 mt-2">${tTags}</div>
+            </div>
+          </div>
+          <div class="pt-4 border-t border-stone-100 flex items-center gap-2.5">
+            <button onclick="openProfileModal('${player.id}')" class="flex-1 py-2.5 px-3 rounded-lg border border-stone-300 text-stone-700 text-xs font-medium hover:border-[#122921] hover:text-[#122921] transition">${i18n[currentLang].btnProfile}</button>
+            <a href="${waLink}" target="_blank" class="flex-1 py-2.5 px-3 rounded-lg bg-[#25D366] hover:bg-[#20ba5a] text-white text-xs font-medium flex items-center justify-center gap-1.5 transition shadow-sm">
+              💬 ${i18n[currentLang].btnWhatsApp}
+            </a>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function openProfileModal(playerId) {
+      const player = allPlayers.find(p => String(p.id) === String(playerId));
+      if (!player) return;
+
+      const name = currentLang === 'tr' ? player.name_tr : (player.name_en || player.name_tr);
+      const title = currentLang === 'tr' ? (player.title_tr || '') : (player.title_en || player.title_tr || '');
+      const bio = currentLang === 'tr' ? (player.bio_tr || '') : (player.bio_en || player.bio_tr || '');
+      const achs = (currentLang === 'tr' ? player.achievements_tr : (player.achievements_en || player.achievements_tr)) || [];
+      const avail = player.availability || {};
+      const waNum = player.whatsapp || '905320000000';
+      const waMsg = encodeURIComponent(`Merhaba ${name}, ProBridge Connect üzerinden ulaşıyorum. Turnuva partnerliği hakkında görüşmek istiyorum.`);
+      const waLink = `https://wa.me/${waNum}?text=${waMsg}`;
+
+      const tListHtml = allTournaments.map(t => {
+        const isAvail = avail[t.id];
+        const tName = currentLang === 'tr' ? t.name_tr : t.name_en;
+        return `<div class="flex items-center justify-between p-2.5 rounded-lg border border-stone-200 bg-white text-xs">
+          <span class="text-stone-700">${tName}</span>
+          <span class="font-medium ${isAvail ? 'text-emerald-700' : 'text-stone-400'}">${isAvail ? (currentLang === 'tr' ? '✓ Müsait' : '✓ Available') : (currentLang === 'tr' ? 'Müsait Değil' : 'Not Available')}</span>
+        </div>`;
+      }).join('');
+
+      const achHtml = achs.length > 0 ? achs.map(a => `<li class="text-stone-600 text-sm mb-1">${a}</li>`).join('') : `<p class="text-stone-400 text-xs">Belirtilmemiş</p>`;
+
+      const content = `
+        <div class="flex flex-col sm:flex-row items-center gap-5 mb-6 text-center sm:text-left">
+          ${renderAvatarHTML(player, 'w-20 h-20', 'text-2xl')}
+          <div>
+            <h2 class="font-serif-luxury text-3xl font-semibold text-[#122921]">${name}</h2>
+            <p class="text-xs gold-text font-semibold uppercase tracking-wider mt-1">${title}</p>
+            <p class="text-xs text-stone-500 mt-1">${player.city || 'Türkiye'} ${player.bbo ? `• BBO: <span class="font-medium text-stone-700">${player.bbo}</span>` : ''}</p>
+          </div>
+        </div>
+
+        <div class="space-y-5 text-sm">
+          <div>
+            <h4 class="text-xs uppercase tracking-wider text-stone-400 font-semibold mb-1">${currentLang === 'tr' ? 'Biyografi' : 'Biography'}</h4>
+            <p class="text-stone-700 leading-relaxed">${bio}</p>
+          </div>
+
+          <div>
+            <h4 class="text-xs uppercase tracking-wider text-stone-400 font-semibold mb-1">${currentLang === 'tr' ? 'Sistem & Ortaklık' : 'System & Partnership'}</h4>
+            <p class="text-stone-700 font-medium">${player.system || '2/1 GF, UDCA'}</p>
+          </div>
+
+          <div>
+            <h4 class="text-xs uppercase tracking-wider text-stone-400 font-semibold mb-1">${currentLang === 'tr' ? 'Önemli Başarılar' : 'Major Achievements'}</h4>
+            <ul class="list-disc list-inside space-y-1">${achHtml}</ul>
+          </div>
+
+          <div>
+            <h4 class="text-xs uppercase tracking-wider text-stone-400 font-semibold mb-2">${currentLang === 'tr' ? 'Turnuva Müsaitlik Durumu' : 'Tournament Availability'}</h4>
+            <div class="grid grid-cols-1 gap-2">${tListHtml}</div>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-stone-200 flex items-center justify-end gap-3">
+          <button onclick="closeModal('profile-modal')" class="py-2.5 px-5 rounded-lg border border-stone-300 text-stone-700 text-xs font-medium hover:bg-stone-100 transition">Kapat</button>
+          <a href="${waLink}" target="_blank" class="py-2.5 px-6 rounded-lg bg-[#25D366] hover:bg-[#20ba5a] text-white text-xs font-medium flex items-center gap-2 transition shadow-sm">
+            💬 ${i18n[currentLang].btnWhatsApp}
+          </a>
+        </div>
+      `;
+
+      document.getElementById('profile-modal-content').innerHTML = content;
+      document.getElementById('profile-modal').classList.remove('hidden');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.add('hidden');
+    }
+
+    function openAuthModal() {
+      document.getElementById('auth-modal').classList.remove('hidden');
+      if (currentUser) {
+        document.getElementById('auth-forms-container').classList.add('hidden');
+        document.getElementById('dashboard-container').classList.remove('hidden');
+      } else {
+        document.getElementById('auth-forms-container').classList.remove('hidden');
+        document.getElementById('dashboard-container').classList.add('hidden');
+      }
+    }
+
+    function switchAuthTab(tab) {
+      const loginForm = document.getElementById('login-form');
+      const signupForm = document.getElementById('signup-form');
+      const tabLogin = document.getElementById('tab-login');
+      const tabSignup = document.getElementById('tab-signup');
+      const err = document.getElementById('auth-error');
+      err.classList.add('hidden');
+
+      if (tab === 'login') {
+        loginForm.classList.remove('hidden');
+        signupForm.classList.add('hidden');
+        tabLogin.className = 'text-sm font-semibold text-[#122921] border-b-2 border-[#122921] pb-1';
+        tabSignup.className = 'text-sm font-medium text-stone-500 pb-1';
+      } else {
+        loginForm.classList.add('hidden');
+        signupForm.classList.remove('hidden');
+        tabSignup.className = 'text-sm font-semibold text-[#122921] border-b-2 border-[#122921] pb-1';
+        tabLogin.className = 'text-sm font-medium text-stone-500 pb-1';
+      }
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const pass = document.getElementById('login-password').value;
+      const err = document.getElementById('auth-error');
+      err.classList.add('hidden');
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password: pass });
+      if (error) {
+        err.textContent = 'Giriş başarısız: ' + error.message;
+        err.classList.remove('hidden');
+        return;
+      }
+
+      currentUser = data.user;
+      await fetchUserProfile(currentUser.id);
+      closeModal('auth-modal');
+      updateAuthNav();
+    }
+
+    async function handleSignup(e) {
+      e.preventDefault();
+      const err = document.getElementById('auth-error');
+      err.classList.add('hidden');
+
+      const email = document.getElementById('reg-email').value;
+      const password = document.getElementById('reg-password').value;
+      const passwordConfirm = document.getElementById('reg-password-confirm').value;
+
+      // Şifre eşleşme kontrolü
+      if (password !== passwordConfirm) {
+        err.textContent = 'Girdiğiniz şifreler birbiriyle eşleşmiyor. Lütfen kontrol edin.';
+        err.classList.remove('hidden');
+        return;
+      }
+
+      const name = document.getElementById('reg-name').value;
+      const city = document.getElementById('reg-city').value;
+      const title = document.getElementById('reg-title').value;
+      const bbo = document.getElementById('reg-bbo').value;
+      const whatsapp = document.getElementById('reg-whatsapp').value;
+      const system = document.getElementById('reg-system').value;
+      const bioTr = document.getElementById('reg-bio-tr').value;
+      const bioEn = document.getElementById('reg-bio-en').value;
+      const achRaw = document.getElementById('reg-ach').value;
+      const achs = achRaw ? achRaw.split('\n').map(s => s.trim()).filter(Boolean) : [];
+      const photoFile = document.getElementById('reg-photo').files[0];
+
+      const { data, error } = await supabaseClient.auth.signUp({ email, password });
+      if (error) {
+        err.textContent = 'Kayıt hatası: ' + error.message;
+        err.classList.remove('hidden');
+        return;
+      }
+
+      const userId = data.user?.id;
+      let avatarUrl = null;
+      if (userId && photoFile) {
+        try {
+          avatarUrl = await uploadAvatar(photoFile, userId);
+        } catch (errUpload) {
+          console.error('Avatar yükleme hatası:', errUpload);
+        }
+      }
+
+      if (userId) {
+        const { error: profileErr } = await supabaseClient.from('profiles').upsert({
+          id: userId,
+          name_tr: name,
+          name_en: name,
+          city,
+          title_tr: title,
+          title_en: title,
+          bbo,
+          whatsapp,
+          system,
+          bio_tr: bioTr,
+          bio_en: bioEn,
+          achievements_tr: achs,
+          achievements_en: achs,
+          avatar_url: avatarUrl,
+          is_approved: false,
+          availability: {}
+        });
+
+        if (profileErr) {
+          err.textContent = 'Profil oluşturulamadı: ' + profileErr.message;
+          err.classList.remove('hidden');
+          return;
+        }
+      }
+
+      alert('Kayıt işleminiz tamamlandı! Profiliniz onaylandıktan sonra kadroda yayınlanacaktır.');
+      closeModal('auth-modal');
+      currentUser = data.user;
+      await fetchUserProfile(currentUser.id);
+      updateAuthNav();
+    }
+
+    async function handleLogout() {
+      await supabaseClient.auth.signOut();
+      currentUser = null;
+      currentUserProfile = null;
+      updateAuthNav();
+      closeModal('auth-modal');
+    }
+
+    async function checkSession() {
+      const { data } = await supabaseClient.auth.getSession();
+      if (data && data.session) {
+        currentUser = data.session.user;
+        await fetchUserProfile(currentUser.id);
+        updateAuthNav();
+      }
+    }
+
+    async function fetchUserProfile(userId) {
+      const { data, error } = await supabaseClient
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (!error && data) {
+        currentUserProfile = data;
+        populateDashboard();
+      }
+    }
+
+    function populateDashboard() {
+      if (!currentUserProfile) return;
+      document.getElementById('dash-user-name').textContent = currentUserProfile.name_tr || 'Profesyonel';
+      document.getElementById('edit-name').value = currentUserProfile.name_tr || '';
+      document.getElementById('edit-city').value = currentUserProfile.city || '';
+      document.getElementById('edit-title').value = currentUserProfile.title_tr || '';
+      document.getElementById('edit-whatsapp').value = currentUserProfile.whatsapp || '';
+      document.getElementById('edit-system').value = currentUserProfile.system || '';
+      document.getElementById('edit-bio-tr').value = currentUserProfile.bio_tr || '';
+      document.getElementById('edit-bio-en').value = currentUserProfile.bio_en || '';
+      document.getElementById('edit-ach').value = (currentUserProfile.achievements_tr || []).join('\n');
+
+      const previewEl = document.getElementById('edit-avatar-preview');
+      if (currentUserProfile.avatar_url) {
+        previewEl.innerHTML = `<img src="${currentUserProfile.avatar_url}" alt="Avatar" class="w-full h-full object-cover">`;
+      } else {
+        const initials = (currentUserProfile.name_tr || 'P').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        previewEl.innerHTML = initials;
+      }
+
+      const notice = document.getElementById('approval-notice');
+      if (currentUserProfile.is_approved) {
+        notice.classList.add('hidden');
+      } else {
+        notice.classList.remove('hidden');
+      }
+
+      const avail = currentUserProfile.availability || {};
+      document.querySelectorAll('.tour-chk').forEach(chk => {
+        const tid = chk.getAttribute('data-tid');
+        chk.checked = !!avail[tid];
+      });
+    }
+
+    async function saveProfileUpdates(e) {
+      e.preventDefault();
+      if (!currentUser) return;
+
+      const msg = document.getElementById('dash-msg');
+      msg.classList.add('hidden');
+
+      const name = document.getElementById('edit-name').value;
+      const city = document.getElementById('edit-city').value;
+      const title = document.getElementById('edit-title').value;
+      const whatsapp = document.getElementById('edit-whatsapp').value;
+      const system = document.getElementById('edit-system').value;
+      const bioTr = document.getElementById('edit-bio-tr').value;
+      const bioEn = document.getElementById('edit-bio-en').value;
+      const achRaw = document.getElementById('edit-ach').value;
+      const achs = achRaw ? achRaw.split('\n').map(s => s.trim()).filter(Boolean) : [];
+      const photoFile = document.getElementById('edit-photo').files[0];
+
+      let avatarUrl = currentUserProfile.avatar_url;
+      if (photoFile) {
+        try {
+          avatarUrl = await uploadAvatar(photoFile, currentUser.id);
+        } catch (errUpload) {
+          console.error('Avatar yükleme hatası:', errUpload);
+        }
+      }
+
+      const availability = {};
+      document.querySelectorAll('.tour-chk').forEach(chk => {
+        const tid = chk.getAttribute('data-tid');
+        availability[tid] = chk.checked;
+      });
+
+      const { error } = await supabaseClient.from('profiles').update({
+        name_tr: name,
+        name_en: name,
+        city,
+        title_tr: title,
+        title_en: title,
+        whatsapp,
+        system,
+        bio_tr: bioTr,
+        bio_en: bioEn,
+        achievements_tr: achs,
+        achievements_en: achs,
+        avatar_url: avatarUrl,
+        availability
+      }).eq('id', currentUser.id);
+
+      if (error) {
+        alert('Güncelleme hatası: ' + error.message);
+        return;
+      }
+
+      msg.textContent = 'Profiliniz başarıyla güncellendi!';
+      msg.classList.remove('hidden');
+      await fetchUserProfile(currentUser.id);
+      loadPlayers();
+    }
+
+    async function updatePassword() {
+      const newPassword = document.getElementById('new-password').value;
+      const msgEl = document.getElementById('password-msg');
+      msgEl.classList.add('hidden');
+
+      if (!newPassword || newPassword.length < 6) {
+        msgEl.textContent = 'Yeni şifre en az 6 karakter olmalıdır.';
+        msgEl.className = 'mt-2 text-xs text-red-600';
+        msgEl.classList.remove('hidden');
+        return;
+      }
+
+      const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
+
+      if (error) {
+        msgEl.textContent = 'Şifre güncellenemedi: ' + error.message;
+        msgEl.className = 'mt-2 text-xs text-red-600';
+      } else {
+        msgEl.textContent = 'Şifreniz başarıyla güncellendi!';
+        msgEl.className = 'mt-2 text-xs text-emerald-700';
+        document.getElementById('new-password').value = '';
+      }
+      msgEl.classList.remove('hidden');
+    }
+
+    function updateAuthNav() {
+      const area = document.getElementById('auth-nav-area');
+      if (currentUser) {
+        area.innerHTML = `
+          <button onclick="openAuthModal()" class="text-xs sm:text-sm font-medium px-4 py-2 rounded-full emerald-bg text-white hover:opacity-95 transition flex items-center gap-2">
+            <span>♠</span> <span data-i18n="navMyPanel">${i18n[currentLang].navMyPanel}</span>
+          </button>
+        `;
+      } else {
+        area.innerHTML = `
+          <button onclick="openAuthModal()" class="text-xs sm:text-sm font-medium px-4 py-2 rounded-full border border-[#122921] text-[#122921] hover:bg-[#122921] hover:text-white transition" data-i18n="navJoin">
+            ${i18n[currentLang].navJoin}
+          </button>
+        `;
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
