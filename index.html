@@ -52,7 +52,7 @@
     <div class="border-b border-[#C69214]/15 bg-[#F3EFE4]/80">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-6 flex items-center justify-end">
         <span class="text-[10px] tracking-[0.18em] text-stone-500 font-normal">
-          POWERED BY <span class="font-serif-luxury italic text-xs tracking-normal text-[#C69214] font-semibold ml-0.5">Ömer Kızılok</span>
+          POWERED BY <span class="font-serif-luxury italic text-xs tracking-normal text-[#8F6400] font-semibold ml-0.5">Ömer Kızılok</span>
         </span>
       </div>
     </div>
@@ -64,7 +64,7 @@
         </div>
         <div>
           <span class="font-serif-luxury text-2xl font-bold tracking-tight text-[#0F3D2E]">ProBridge</span>
-          <span class="text-xs uppercase tracking-[0.2em] text-[#C69214] ml-1.5 font-semibold">Connect</span>
+          <span class="text-xs uppercase tracking-[0.2em] text-[#8F6400] ml-1.5 font-semibold">Connect</span>
         </div>
       </a>
 
@@ -123,14 +123,14 @@
       <div class="border-b border-[#C69214]/25 pb-8 space-y-6">
         <div class="flex flex-col items-center text-center gap-3">
           <div>
-            <p class="text-[11px] uppercase tracking-[0.2em] text-[#8F6400] font-bold mb-1" data-i18n="tourTableBadge">
+            <p class="text-xs sm:text-sm uppercase tracking-[0.18em] text-[#8F6400] font-bold mb-1.5" data-i18n="tourTableBadge">
               TURNUVA TAKVİMİ & PARTNER FİLTRESİ
             </p>
             <p class="text-base sm:text-xl font-semibold text-[#0F3D2E] tracking-tight" data-i18n="rosterSub">
               Turnuva seçerek müsait olan profesyonelleri filtreleyebilirsiniz.
             </p>
           </div>
-          <button id="btn-reset-filter" onclick="filterTournament('all')" class="hidden text-xs font-semibold px-3.5 py-1.5 rounded-full border border-[#C69214] bg-[#FFFBEB] text-[#9A6E05] hover:emerald-bg hover:text-[#FDE68A] hover:border-[#14533E] transition" data-i18n="clearFilterBtn">
+          <button id="btn-reset-filter" onclick="filterTournament('all')" class="hidden text-xs font-semibold px-3.5 py-1.5 rounded-full border border-[#C69214] bg-[#FFFBEB] text-[#8F6400] hover:emerald-bg hover:text-[#FDE68A] hover:border-[#14533E] transition" data-i18n="clearFilterBtn">
             ✕ Filtreyi Temizle (Tümünü Göster)
           </button>
         </div>
@@ -140,11 +140,24 @@
           <!-- JS ile 3 sütunlu tablo olarak render edilecek -->
         </div>
 
-        <div class="pt-4 flex flex-col items-center text-center gap-1.5">
+        <div class="pt-4 flex flex-col items-center text-center gap-3">
           <h2 class="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#14533E] pb-1 border-b-2 border-[#C69214]/60 inline-block" data-i18n="rosterTitle">
             Profesyonel Oyuncu Kadromuz
           </h2>
           <p id="active-filter-caption" class="text-xs font-medium text-stone-500"></p>
+
+          <!-- Oyuncu Ara Butonu ve Açılır Arama Kutusu -->
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-1">
+            <button id="btn-toggle-search" type="button" onclick="togglePlayerSearch()" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FFFBEB] border border-[#C69214]/60 text-[#0F3D2E] text-xs font-semibold hover:emerald-bg hover:text-[#FDE68A] hover:border-[#14533E] transition shadow-2xs cursor-pointer">
+              <span>🔍</span>
+              <span data-i18n="searchBtn">Oyuncu Ara</span>
+            </button>
+
+            <div id="player-search-box" class="hidden items-center gap-1.5 bg-white border border-[#C69214]/60 rounded-full px-3.5 py-1.5 shadow-2xs">
+              <input id="player-search-input" type="text" oninput="handlePlayerSearch(this.value)" placeholder="İsim veya baş harf yazın..." class="text-xs sm:text-sm text-[#0F3D2E] placeholder:text-stone-400 focus:outline-none w-48 sm:w-60 bg-transparent">
+              <button type="button" onclick="clearPlayerSearch()" title="Temizle" class="text-xs text-stone-400 hover:text-[#0F3D2E] px-1">✕</button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -273,7 +286,7 @@
     <div class="bg-white rounded-2xl border gold-border shadow-sm p-6 sm:p-8">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4 mb-6">
         <div>
-          <p class="text-xs uppercase tracking-widest gold-text font-semibold">ORGANİZATÖR / YÖNETİCİ ARACI</p>
+          <p class="text-xs uppercase tracking-widest text-[#8F6400] font-semibold">ORGANİZATÖR / YÖNETİCİ ARACI</p>
           <h3 class="font-serif-luxury text-2xl sm:text-3xl font-semibold text-[#0F3D2E]">Yeni Turnuva WhatsApp Duyurusu</h3>
         </div>
         <span class="text-xs text-stone-500">Her tıklamada mesajı hazır açar</span>
@@ -306,7 +319,7 @@
     <div class="bg-white rounded-2xl border gold-border shadow-sm p-6 sm:p-8">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4 mb-6">
         <div>
-          <p class="text-xs uppercase tracking-widest gold-text font-semibold">PROFİL ONAY BİLDİRİMİ</p>
+          <p class="text-xs uppercase tracking-widest text-[#8F6400] font-semibold">PROFİL ONAY BİLDİRİMİ</p>
           <h3 class="font-serif-luxury text-2xl sm:text-3xl font-semibold text-[#0F3D2E]">Profil Onayı WhatsApp Mesajı</h3>
         </div>
         <button type="button" onclick="loadApprovalProfiles()" class="text-xs px-3 py-1.5 rounded-lg border border-stone-300 text-stone-700 hover:border-[#14533E] transition self-start sm:self-auto">
@@ -354,7 +367,7 @@
       <!-- E-postadaki Sıfırlama Bağlantısından Gelince Açılan Yeni Şifre Ekranı -->
       <div id="recovery-container" class="hidden space-y-4">
         <div class="border-b border-stone-200 pb-3">
-          <p class="text-xs uppercase tracking-widest gold-text font-semibold">ŞİFRE SIFIRLAMA</p>
+          <p class="text-xs uppercase tracking-widest text-[#8F6400] font-semibold">ŞİFRE SIFIRLAMA</p>
           <h3 class="font-serif-luxury text-2xl font-semibold text-[#0F3D2E]">Yeni Şifre Belirle</h3>
         </div>
         <p class="text-xs text-stone-600 leading-relaxed">
@@ -472,7 +485,7 @@
       <div id="dashboard-container" class="hidden">
         <div class="flex items-center justify-between border-b border-stone-200 pb-4 mb-5">
           <div>
-            <p class="text-xs uppercase tracking-widest gold-text font-semibold">PROFESYONEL PANELİ</p>
+            <p class="text-xs uppercase tracking-widest text-[#8F6400] font-semibold">PROFESYONEL PANELİ</p>
             <h3 id="dash-user-name" class="font-serif-luxury text-2xl font-semibold text-[#0F3D2E]">Hoş Geldiniz</h3>
           </div>
           <button onclick="handleLogout()" class="text-xs text-red-600 hover:underline">Çıkış Yap</button>
@@ -572,12 +585,41 @@
     let currentLang = 'tr';
     let currentSection = 'home';
     let currentFilter = 'all';
+    let playerSearchQuery = '';
     let allPlayers = [];
     let allTournaments = [];
     let approvalListProfiles = [];
     let currentUser = null;
     let currentUserProfile = null;
     let isPasswordRecoveryMode = false;
+
+    function togglePlayerSearch() {
+      const box = document.getElementById('player-search-box');
+      const input = document.getElementById('player-search-input');
+      if (!box) return;
+      const isHidden = box.classList.contains('hidden');
+      if (isHidden) {
+        box.classList.remove('hidden');
+        box.classList.add('flex');
+        setTimeout(() => input?.focus(), 50);
+      } else {
+        clearPlayerSearch();
+        box.classList.add('hidden');
+        box.classList.remove('flex');
+      }
+    }
+
+    function handlePlayerSearch(val) {
+      playerSearchQuery = (val || '').trim().toLocaleLowerCase('tr-TR');
+      renderPlayers();
+    }
+
+    function clearPlayerSearch() {
+      const input = document.getElementById('player-search-input');
+      if (input) input.value = '';
+      playerSearchQuery = '';
+      renderPlayers();
+    }
 
     function switchSection(sectionKey, event = null) {
       if (event) event.preventDefault();
@@ -640,7 +682,7 @@
                 ${parsed.location}
               </span>
             </td>
-            <td class="px-4 sm:px-6 py-4 text-xs sm:text-sm whitespace-nowrap font-semibold text-[#9A6E05]">${parsed.date}</td>
+            <td class="px-4 sm:px-6 py-4 text-xs sm:text-sm whitespace-nowrap font-semibold text-[#8F6400]">${parsed.date}</td>
             <td class="px-4 sm:px-6 py-4 text-xs sm:text-sm whitespace-nowrap text-right">
               <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-[#0F3D2E] border border-[#14533E]/30">
                 ${availCount} ${currentLang === 'tr' ? 'Müsait Pro →' : 'Available →'}
@@ -858,6 +900,7 @@
         tourTableBadge: 'TURNUVA TAKVİMİ & PARTNER FİLTRESİ',
         rosterTitle: 'Profesyonel Oyuncu Kadromuz',
         rosterSub: 'Turnuva seçerek müsait olan profesyonelleri filtreleyebilirsiniz.',
+        searchBtn: 'Oyuncu Ara',
         clearFilterBtn: '✕ Filtreyi Temizle (Tümünü Göster)',
         colTourName: 'Turnuva Adı',
         colTourPlace: 'Turnuva Yeri',
@@ -880,6 +923,7 @@
         tourTableBadge: 'TOURNAMENT SCHEDULE & PARTNER FILTER',
         rosterTitle: 'Our Professional Roster',
         rosterSub: 'Filter available professionals by selecting your target tournament.',
+        searchBtn: 'Search Player',
         clearFilterBtn: '✕ Clear Filter (Show All)',
         colTourName: 'Tournament Name',
         colTourPlace: 'Location',
@@ -1088,7 +1132,7 @@
                 ${parsed.location}
               </span>
             </td>
-            <td class="px-4 sm:px-6 py-3.5 text-xs sm:text-sm whitespace-nowrap font-semibold ${isActive ? 'text-[#F5C842]' : 'text-[#9A6E05]'}">
+            <td class="px-4 sm:px-6 py-3.5 text-xs sm:text-sm whitespace-nowrap font-semibold ${isActive ? 'text-[#F5C842]' : 'text-[#8F6400]'}">
               ${parsed.date}
             </td>
           </tr>
@@ -1165,8 +1209,13 @@
 
       const sortedTours = getSortedTournaments(currentLang);
       const filtered = allPlayers.filter(p => {
-        if (currentFilter === 'all') return true;
-        return p.availability && p.availability[currentFilter] === true;
+        const matchesTour = currentFilter === 'all' || (p.availability && p.availability[currentFilter] === true);
+        if (!matchesTour) return false;
+
+        if (!playerSearchQuery) return true;
+        const fullName = formatTurkishTitleCase(currentLang === 'tr' ? p.name_tr : (p.name_en || p.name_tr)).toLocaleLowerCase('tr-TR');
+        const words = fullName.split(/\s+/);
+        return words.some(w => w.startsWith(playerSearchQuery));
       });
 
       const captionEl = document.getElementById('active-filter-caption');
@@ -1188,9 +1237,9 @@
         grid.innerHTML = `
           <div class="col-span-full bg-white rounded-2xl border gold-border p-10 text-center space-y-3">
             <p class="font-serif-luxury text-2xl text-[#0F3D2E]">
-              ${currentLang === 'tr' ? 'Bu turnuva için henüz müsaitlik işaretleyen profesyonel bulunmuyor.' : 'No professionals have marked availability for this tournament yet.'}
+              ${currentLang === 'tr' ? 'Arama veya turnuva kriterine uygun profesyonel bulunamadı.' : 'No matching professionals found for the selected filter or search.'}
             </p>
-            <button onclick="filterTournament('all')" class="text-xs font-semibold px-4 py-2 rounded-full emerald-bg text-[#FDE68A] hover:opacity-95 transition">
+            <button onclick="clearPlayerSearch(); filterTournament('all');" class="text-xs font-semibold px-4 py-2 rounded-full emerald-bg text-[#FDE68A] hover:opacity-95 transition">
               ${currentLang === 'tr' ? 'Tüm Kadroyu Göster' : 'Show Full Roster'}
             </button>
           </div>
@@ -1220,7 +1269,7 @@
               <div class="flex items-center gap-3.5">
                 ${renderAvatarHTML(player, 'w-14 h-14', 'text-lg')}
                 <div>
-                  <h3 onclick="openProfileModal('${player.id}')" class="font-serif-luxury text-2xl font-semibold text-[#0F3D2E] hover:text-[#C69214] cursor-pointer transition leading-snug">${name}</h3>
+                  <h3 onclick="openProfileModal('${player.id}')" class="font-serif-luxury text-2xl font-semibold text-[#0F3D2E] hover:text-[#8F6400] cursor-pointer transition leading-snug">${name}</h3>
                   <p class="text-xs text-stone-500">${formatTurkishTitleCase(player.city) || 'Türkiye'} ${player.bbo ? `• BBO: <span class="font-medium text-stone-700">${player.bbo}</span>` : ''}</p>
                 </div>
               </div>
