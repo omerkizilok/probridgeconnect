@@ -64,7 +64,28 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       <a href="#home" onclick="switchSection('home', event)" class="flex items-center gap-3">
         <div class="w-9 h-9 rounded-full emerald-bg flex items-center justify-center text-[#F5C842] font-serif-luxury text-xl font-bold shadow-sm ring-1 ring-[#E5B83B]/50">
-          ♠
+          <svg class="w-6 h-6" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <circle cx="60" cy="60" r="33" stroke="#F5C842" stroke-width="2.2" stroke-dasharray="32 14" transform="rotate(-22 60 60)" />
+  <circle cx="60" cy="60" r="24" stroke="#E5B83B" stroke-width="1.6" opacity="0.85" />
+  <circle cx="60" cy="60" r="9" stroke="#F5C842" stroke-width="2" />
+  <circle cx="60" cy="60" r="3" fill="#F5C842" />
+  <line x1="60" y1="27" x2="60" y2="51" stroke="#F5C842" stroke-width="1.6" />
+  <line x1="60" y1="69" x2="60" y2="93" stroke="#F5C842" stroke-width="1.6" />
+  <line x1="27" y1="60" x2="51" y2="60" stroke="#F5C842" stroke-width="1.6" />
+  <line x1="69" y1="60" x2="93" y2="60" stroke="#F5C842" stroke-width="1.6" />
+  <line x1="38" y1="38" x2="53.5" y2="53.5" stroke="#E5B83B" stroke-width="1.4" />
+  <line x1="82" y1="38" x2="66.5" y2="53.5" stroke="#E5B83B" stroke-width="1.4" />
+  <line x1="38" y1="82" x2="53.5" y2="66.5" stroke="#E5B83B" stroke-width="1.4" />
+  <line x1="82" y1="82" x2="66.5" y2="66.5" stroke="#E5B83B" stroke-width="1.4" />
+  <circle cx="43" cy="43" r="2.2" fill="#F5C842" />
+  <circle cx="77" cy="43" r="2.2" fill="#F5C842" />
+  <circle cx="43" cy="77" r="2.2" fill="#F5C842" />
+  <circle cx="77" cy="77" r="2.2" fill="#F5C842" />
+  <path d="M60 7 C53.5 13 48.5 17.2 48.5 21.8 C48.5 25.1 51.1 27.5 54.2 27.5 C56.1 27.5 57.8 26.6 58.8 25.2 L56.8 30.2 L63.2 30.2 L61.2 25.2 C62.2 26.6 63.9 27.5 65.8 27.5 C68.9 27.5 71.5 25.1 71.5 21.8 C71.5 17.2 66.5 13 60 7 Z" fill="#111827" stroke="#F5C842" stroke-width="1.8" stroke-linejoin="round" />
+  <path d="M60 113 C66.5 107 71.5 102.8 71.5 98.2 C71.5 94.9 68.9 92.5 65.8 92.5 C63.9 92.5 62.2 93.4 61.2 94.8 L63.2 89.8 L56.8 89.8 L58.8 94.8 C57.8 93.4 56.1 92.5 54.2 92.5 C51.1 92.5 48.5 94.9 48.5 98.2 C48.5 102.8 53.5 107 60 113 Z" fill="#C81E3A" stroke="#F5C842" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="18,48 29,60 18,72 7,60" fill="#C81E3A" stroke="#F5C842" stroke-width="1.8" stroke-linejoin="round" />
+  <path d="M97 49.5 C94.2 49.5 92 51.7 92 54.4 C92 55.6 92.5 56.7 93.3 57.5 C90.4 57.6 88 59.9 88 62.8 C88 65.7 90.4 68 93.3 68 C95.2 68 96.9 67 97.8 65.5 L95.8 71 L102.2 71 L100.2 65.5 C101.1 67 102.8 68 104.7 68 C107.6 68 110 65.7 110 62.8 C110 59.9 107.6 57.6 104.7 57.5 C105.5 56.7 106 55.6 106 54.4 C106 51.7 103.8 49.5 101 49.5 C99.6 49.5 98.4 50.1 97.5 51 C97.3 50.1 97.1 49.5 97 49.5 Z" fill="#111827" stroke="#F5C842" stroke-width="1.7" stroke-linejoin="round" />
+</svg>
         </div>
         <div>
           <span class="font-serif-luxury text-2xl font-bold tracking-tight text-[#0F3D2E]">ProBridge</span>
@@ -1917,7 +1938,28 @@
       if (currentUser) {
         area.innerHTML = `
           <button onclick="openAuthModal()" class="text-xs sm:text-sm font-medium px-4 py-2 rounded-full emerald-bg text-[#FDE68A] hover:opacity-95 transition flex items-center gap-2 shadow-2xs">
-            <span class="text-[#F5C842]">♠</span> <span data-i18n="navMyPanel">${i18n[currentLang].navMyPanel}</span>
+            <span class="text-[#F5C842]"><svg class="w-6 h-6" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <circle cx="60" cy="60" r="33" stroke="#F5C842" stroke-width="2.2" stroke-dasharray="32 14" transform="rotate(-22 60 60)" />
+  <circle cx="60" cy="60" r="24" stroke="#E5B83B" stroke-width="1.6" opacity="0.85" />
+  <circle cx="60" cy="60" r="9" stroke="#F5C842" stroke-width="2" />
+  <circle cx="60" cy="60" r="3" fill="#F5C842" />
+  <line x1="60" y1="27" x2="60" y2="51" stroke="#F5C842" stroke-width="1.6" />
+  <line x1="60" y1="69" x2="60" y2="93" stroke="#F5C842" stroke-width="1.6" />
+  <line x1="27" y1="60" x2="51" y2="60" stroke="#F5C842" stroke-width="1.6" />
+  <line x1="69" y1="60" x2="93" y2="60" stroke="#F5C842" stroke-width="1.6" />
+  <line x1="38" y1="38" x2="53.5" y2="53.5" stroke="#E5B83B" stroke-width="1.4" />
+  <line x1="82" y1="38" x2="66.5" y2="53.5" stroke="#E5B83B" stroke-width="1.4" />
+  <line x1="38" y1="82" x2="53.5" y2="66.5" stroke="#E5B83B" stroke-width="1.4" />
+  <line x1="82" y1="82" x2="66.5" y2="66.5" stroke="#E5B83B" stroke-width="1.4" />
+  <circle cx="43" cy="43" r="2.2" fill="#F5C842" />
+  <circle cx="77" cy="43" r="2.2" fill="#F5C842" />
+  <circle cx="43" cy="77" r="2.2" fill="#F5C842" />
+  <circle cx="77" cy="77" r="2.2" fill="#F5C842" />
+  <path d="M60 7 C53.5 13 48.5 17.2 48.5 21.8 C48.5 25.1 51.1 27.5 54.2 27.5 C56.1 27.5 57.8 26.6 58.8 25.2 L56.8 30.2 L63.2 30.2 L61.2 25.2 C62.2 26.6 63.9 27.5 65.8 27.5 C68.9 27.5 71.5 25.1 71.5 21.8 C71.5 17.2 66.5 13 60 7 Z" fill="#111827" stroke="#F5C842" stroke-width="1.8" stroke-linejoin="round" />
+  <path d="M60 113 C66.5 107 71.5 102.8 71.5 98.2 C71.5 94.9 68.9 92.5 65.8 92.5 C63.9 92.5 62.2 93.4 61.2 94.8 L63.2 89.8 L56.8 89.8 L58.8 94.8 C57.8 93.4 56.1 92.5 54.2 92.5 C51.1 92.5 48.5 94.9 48.5 98.2 C48.5 102.8 53.5 107 60 113 Z" fill="#C81E3A" stroke="#F5C842" stroke-width="1.8" stroke-linejoin="round" />
+  <polygon points="18,48 29,60 18,72 7,60" fill="#C81E3A" stroke="#F5C842" stroke-width="1.8" stroke-linejoin="round" />
+  <path d="M97 49.5 C94.2 49.5 92 51.7 92 54.4 C92 55.6 92.5 56.7 93.3 57.5 C90.4 57.6 88 59.9 88 62.8 C88 65.7 90.4 68 93.3 68 C95.2 68 96.9 67 97.8 65.5 L95.8 71 L102.2 71 L100.2 65.5 C101.1 67 102.8 68 104.7 68 C107.6 68 110 65.7 110 62.8 C110 59.9 107.6 57.6 104.7 57.5 C105.5 56.7 106 55.6 106 54.4 C106 51.7 103.8 49.5 101 49.5 C99.6 49.5 98.4 50.1 97.5 51 C97.3 50.1 97.1 49.5 97 49.5 Z" fill="#111827" stroke="#F5C842" stroke-width="1.7" stroke-linejoin="round" />
+</svg></span> <span data-i18n="navMyPanel">${i18n[currentLang].navMyPanel}</span>
           </button>
         `;
       } else {
