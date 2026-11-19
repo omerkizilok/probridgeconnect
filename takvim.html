@@ -17,6 +17,15 @@
 <body class="antialiased selection:bg-[#122921] selection:text-white flex flex-col min-h-screen">
 
   <header class="sticky top-0 z-40 bg-[#FAF9F6]/95 backdrop-blur-md border-b border-stone-200/80">
+    <!-- Sağ Üst Zarif İmza Şeridi -->
+    <div class="border-b border-stone-200/50 bg-[#F4F1EA]/60">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-6 flex items-center justify-end">
+        <span class="text-[10px] tracking-[0.18em] text-stone-400 font-light">
+          POWERED BY <span class="font-serif-luxury italic text-xs tracking-normal text-[#9E7E43] font-semibold ml-0.5">Ömer Kızılok</span>
+        </span>
+      </div>
+    </div>
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-3">
         <div class="w-9 h-9 rounded-full emerald-bg flex items-center justify-center text-[#D4AF37] font-serif-luxury text-xl font-bold shadow-sm">♠</div>
@@ -85,7 +94,6 @@
     let tournaments = [];
     let approvedProfiles = [];
 
-    // Hazır olan turnuva sayfalarının linklerini buraya (veya Supabase tournaments tablosundaki details_url/url sütununa) ekleyebilirsin:
     const customTournamentLinks = {
       // 't1': 'https://www.tbricfed.org/...',
       // 't2': 'https://example.com/turnuva-programi'
