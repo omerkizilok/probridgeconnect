@@ -54,7 +54,7 @@
       <p class="text-xs uppercase tracking-[0.25em] gold-text font-semibold mb-3" data-i18n="badge">YAKLAŞAN ORGANİZASYONLAR</p>
       <h1 class="font-serif-luxury text-4xl sm:text-5xl font-semibold text-[#122921] leading-tight mb-5" data-i18n="title">Turnuva Takvimi</h1>
       <p class="text-stone-600 text-base sm:text-lg font-light leading-relaxed" data-i18n="subtitle">
-        Platformumuzda partnerlik planlaması yapılabilen güncel ulusal ve uluslararası turnuva programını inceleyin, ilgili turnuvada müsait profesyonellere doğrudan ulaşın.
+        Platformumuzda partnerlik planlaması yapılabilen güncel ulusal ve uluslararası turnuva programını inceleyin, turnuva detaylarına göz atın veya müsait profesyonellere ulaşın.
       </p>
     </div>
   </section>
@@ -85,6 +85,12 @@
     let tournaments = [];
     let approvedProfiles = [];
 
+    // İstersen turnuva id'sine göre özel sayfa veya duyuru linki tanımlayabilirsin:
+    const customTournamentLinks = {
+      // 't1': 'https://www.tbricfed.org/...',
+      // 't2': 'turnuva-detay.html?id=t2'
+    };
+
     const fallbackTournaments = [
       { id: 't1', name_tr: '5-6 Aralık İnönü İkili Turnuvası/ANKARA', name_en: 'Dec 5-6 Inonu Pairs / ANKARA' },
       { id: 't2', name_tr: '9-11 Aralık Mix Takımlar Şampiyonası/İSTANBUL', name_en: 'Dec 9-11 Mix Teams Championship / ISTANBUL' }
@@ -98,7 +104,8 @@
         navAbout: 'Hakkımızda',
         badge: 'YAKLAŞAN ORGANİZASYONLAR',
         title: 'Turnuva Takvimi',
-        subtitle: 'Platformumuzda partnerlik planlaması yapılabilen güncel ulusal ve uluslararası turnuva programını inceleyin, ilgili turnuvada müsait profesyonellere doğrudan ulaşın.',
+        subtitle: 'Platformumuzda partnerlik planlaması yapılabilen güncel ulusal ve uluslararası turnuva programını inceleyin, turnuva detaylarına göz atın veya müsait profesyonellere ulaşın.',
+        btnDetails: 'Detaylar',
         btnFilter: 'Müsait Profesyonelleri Gör →',
         availCount: 'Müsait Profesyonel',
         footerNote: '© 2026 ProBridge Connect. Tüm görüşmeler gizlilik esasına göre doğrudan profesyonel ve sponsor arasında yürütülür.'
@@ -110,12 +117,20 @@
         navAbout: 'About Us',
         badge: 'UPCOMING EVENTS',
         title: 'Tournament Calendar',
-        subtitle: 'Explore the current schedule of national and international events open for partnership planning and view available professionals directly.',
+        subtitle: 'Explore the current schedule of national and international events open for partnership planning, check tournament details, or view available professionals.',
+        btnDetails: 'Details',
         btnFilter: 'View Available Pros →',
         availCount: 'Available Pros',
         footerNote: '© 2026 ProBridge Connect. All discussions are conducted privately and directly between sponsor and professional.'
       }
     };
+
+    function getTournamentDetailsUrl(t) {
+      if (t.details_url && t.details_url.trim()) return t.details_url.trim();
+      if (t.url && t.url.trim()) return t.url.trim();
+      if (customTournamentLinks[t.id]) return customTournamentLinks[t.id];
+      return `turnuva.html?id=${encodeURIComponent(t.id)}`;
+    }
 
     function setLang(lang) {
       currentLang = lang;
@@ -154,6 +169,8 @@
         const parts = rawName.split('/');
         const eventTitle = parts[0].trim();
         const eventLocation = parts[1] ? parts[1].trim() : '';
+        const detailsHref = getTournamentDetailsUrl(t);
+        const isExternal = detailsHref.startsWith('http');
 
         const count = approvedProfiles.filter(p => p.availability && p.availability[t.id] === true).length;
 
@@ -168,9 +185,14 @@
                 </span>
               </p>
             </div>
-            <a href="index.html?t=${t.id}" class="px-5 py-2.5 rounded-full emerald-bg text-white text-xs font-medium hover:opacity-95 transition text-center shrink-0">
-              ${translations[currentLang].btnFilter}
-            </a>
+            <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+              <a href="${detailsHref}" ${isExternal ? 'target="_blank" rel="noopener noreferrer"' : ''} class="px-4 py-2.5 rounded-full border border-[#122921] text-[#122921] hover:bg-stone-100 text-xs font-medium transition text-center">
+                ${translations[currentLang].btnDetails}
+              </a>
+              <a href="index.html?t=${t.id}" class="px-5 py-2.5 rounded-full emerald-bg text-white text-xs font-medium hover:opacity-95 transition text-center">
+                ${translations[currentLang].btnFilter}
+              </a>
+            </div>
           </div>
         `;
       }).join('');
