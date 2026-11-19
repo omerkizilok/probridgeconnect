@@ -340,6 +340,7 @@
   <script>
     const SUPABASE_URL = 'https://jqrucqipegoynmkmxkqh.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_qCqQDVWrIHDjucBzUC5QYQ_Z-HvJGRQ';
+    const WEB3FORMS_ACCESS_KEY = '7205c39a-18ec-4dd2-8781-8f94a27e020d';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     let currentLang = 'tr';
@@ -361,6 +362,31 @@
           return firstChar + rest;
         })
         .join(' ');
+    }
+
+    async function sendAdminSignupNotification(details) {
+      if (!WEB3FORMS_ACCESS_KEY || WEB3FORMS_ACCESS_KEY === '7205c39a-18ec-4dd2-8781-8f94a27e020d') return;
+      try {
+        await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_ACCESS_KEY,
+            subject: `ProBridge Connect — Yeni Profesyonel Kaydı: ${details.name}`,
+            from_name: 'ProBridge Connect Bildirim',
+            'Ad Soyad': details.name,
+            'Şehir': details.city || '-',
+            'Unvan': details.title || '-',
+            'E-posta': details.email,
+            'WhatsApp': details.whatsapp,
+            'BBO': details.bbo || '-',
+            'Sistem': details.system || '-',
+            'Durum': 'Supabase panelinde onay bekliyor (is_approved = false)'
+          })
+        });
+      } catch (err) {
+        console.error('Admin bildirim hatası:', err);
+      }
     }
 
     const fallbackTournaments = [
@@ -896,6 +922,16 @@
           err.classList.remove('hidden');
           return;
         }
+
+        await sendAdminSignupNotification({
+          name,
+          city,
+          title,
+          email,
+          whatsapp,
+          bbo,
+          system
+        });
       }
 
       alert('Kayıt işleminiz tamamlandı! Profiliniz onaylandıktan sonra kadroda yayınlanacaktır.');
