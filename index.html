@@ -808,7 +808,7 @@
       const err = document.getElementById('auth-error');
       err.classList.add('hidden');
 
-      const email = document.getElementById('reg-email').value;
+      const email = document.getElementById('reg-email').value.trim();
       const password = document.getElementById('reg-password').value;
       const passwordConfirm = document.getElementById('reg-password-confirm').value;
 
@@ -850,6 +850,7 @@
       if (userId) {
         const { error: profileErr } = await supabaseClient.from('profiles').upsert({
           id: userId,
+          email: email,
           name_tr: name,
           name_en: name,
           city,
@@ -980,6 +981,7 @@
       });
 
       const { error } = await supabaseClient.from('profiles').update({
+        email: currentUser.email || currentUserProfile.email || null,
         name_tr: name,
         name_en: name,
         city,
