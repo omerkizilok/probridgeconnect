@@ -129,6 +129,41 @@
     </div>
   </main>
 
+  <!-- YENİ TURNUVA WHATSAPP DUYURU ARACI (Sadece giriş yapınca görünür) -->
+  <section id="wa-broadcast-section" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+    <div class="bg-white rounded-2xl border gold-border shadow-sm p-6 sm:p-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4 mb-6">
+        <div>
+          <p class="text-xs uppercase tracking-widest gold-text font-semibold">ORGANİZATÖR / YÖNETİCİ ARACI</p>
+          <h3 class="font-serif-luxury text-2xl sm:text-3xl font-semibold text-[#122921]">Yeni Turnuva WhatsApp Duyurusu</h3>
+        </div>
+        <span class="text-xs text-stone-500">Her tıklamada mesajı hazır açar</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+        <div>
+          <label class="block text-xs font-medium text-stone-700 mb-1">Kayıtlı Turnuvalardan Seç</label>
+          <select id="wa-tour-select" onchange="syncCustomTourInput()" class="w-full px-3.5 py-2.5 rounded-lg border border-stone-300 bg-white text-sm">
+            <option value="">— El ile turnuva adı gir veya seç —</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-stone-700 mb-1">Turnuva Adı (Mesajda görünecek)</label>
+          <input type="text" id="wa-tour-custom" oninput="renderWaBroadcastList()" placeholder="Örn: 15-17 Ocak Kış İkili Turnuvası / ANKARA" class="w-full px-3.5 py-2.5 rounded-lg border border-stone-300 bg-white text-sm">
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <label class="block text-xs font-medium text-stone-700 mb-1">Mesaj Şablonu (<code class="text-stone-500">{ad}</code> ve <code class="text-stone-500">{turnuva}</code> otomatik değişir)</label>
+        <textarea id="wa-template" rows="2" oninput="renderWaBroadcastList()" class="w-full px-3.5 py-2.5 rounded-lg border border-stone-300 bg-white text-sm">Merhaba {ad}, ProBridge Connect takvimine "{turnuva}" eklendi. Müsaitlik durumunu profilinden işaretleyebilirsin: https://probridgeconnect.com.tr</textarea>
+      </div>
+
+      <div id="wa-broadcast-list" class="divide-y divide-stone-100 border border-stone-200/80 rounded-xl overflow-hidden bg-[#FAF9F6]">
+        <!-- Pro listesi JS ile doldurulacak -->
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer class="emerald-bg text-stone-300 py-12 border-t border-stone-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
@@ -609,7 +644,7 @@
 
       renderTournamentsUI();
       await loadPlayers();
-      checkSession();
+      await checkSession();
     }
 
     function renderTournamentsUI() {
@@ -646,6 +681,7 @@
       if (currentUserProfile) {
         populateDashboard();
       }
+      populateWaTournamentSelect();
     }
 
     async function loadPlayers() {
@@ -730,6 +766,8 @@
         `;
         grid.appendChild(card);
       });
+
+      renderWaBroadcastList();
     }
 
     function openProfileModal(playerId) {
@@ -850,6 +888,7 @@
       await fetchUserProfile(currentUser.id);
       closeModal('auth-modal');
       updateAuthNav();
+      toggleWaBroadcastVisibility();
     }
 
     async function handleSignup(e) {
@@ -937,8 +976,11 @@
       alert('Kayıt işleminiz tamamlandı! Profiliniz onaylandıktan sonra kadroda yayınlanacaktır.');
       closeModal('auth-modal');
       currentUser = data.user;
-      await fetchUserProfile(currentUser.id);
+      if (currentUser) {
+        await fetchUserProfile(currentUser.id);
+      }
       updateAuthNav();
+      toggleWaBroadcastVisibility();
     }
 
     async function handleLogout() {
@@ -946,6 +988,7 @@
       currentUser = null;
       currentUserProfile = null;
       updateAuthNav();
+      toggleWaBroadcastVisibility();
       closeModal('auth-modal');
     }
 
@@ -956,6 +999,7 @@
         await fetchUserProfile(currentUser.id);
         updateAuthNav();
       }
+      toggleWaBroadcastVisibility();
     }
 
     async function fetchUserProfile(userId) {
@@ -1107,6 +1151,93 @@
           </button>
         `;
       }
+    }
+
+    /* --- WHATSAPP DUYURU ARACI --- */
+    function toggleWaBroadcastVisibility() {
+      const sec = document.getElementById('wa-broadcast-section');
+      if (!sec) return;
+      if (currentUser) {
+        sec.classList.remove('hidden');
+        populateWaTournamentSelect();
+        renderWaBroadcastList();
+      } else {
+        sec.classList.add('hidden');
+      }
+    }
+
+    function cleanPhoneForWa(rawPhone) {
+      if (!rawPhone) return '';
+      let digits = String(rawPhone).replace(/\D/g, '');
+      if (digits.startsWith('0') && digits.length === 11) {
+        digits = '9' + digits;
+      } else if (digits.length === 10 && digits.startsWith('5')) {
+        digits = '90' + digits;
+      }
+      return digits;
+    }
+
+    function populateWaTournamentSelect() {
+      const sel = document.getElementById('wa-tour-select');
+      if (!sel || !Array.isArray(allTournaments)) return;
+      const currentVal = sel.value;
+      sel.innerHTML = `<option value="">— El ile turnuva adı gir veya seç —</option>` +
+        allTournaments.map(t => {
+          const label = t.name_tr || t.name_en || t.id;
+          return `<option value="${label.replace(/"/g, '&quot;')}">${label}</option>`;
+        }).join('');
+      if (currentVal) sel.value = currentVal;
+    }
+
+    function syncCustomTourInput() {
+      const sel = document.getElementById('wa-tour-select');
+      const inp = document.getElementById('wa-tour-custom');
+      if (sel && inp && sel.value) {
+        inp.value = sel.value;
+      }
+      renderWaBroadcastList();
+    }
+
+    function renderWaBroadcastList() {
+      const container = document.getElementById('wa-broadcast-list');
+      if (!container || !currentUser) return;
+
+      const tourName = (document.getElementById('wa-tour-custom')?.value || '').trim() || 'Yeni Turnuva';
+      const template = document.getElementById('wa-template')?.value || '';
+      const pros = (Array.isArray(allPlayers) ? allPlayers : []).filter(p => p.id !== 'demo-1');
+
+      if (pros.length === 0) {
+        container.innerHTML = `<div class="p-4 text-xs text-stone-500">Henüz onaylı profesyonel profili bulunmuyor.</div>`;
+        return;
+      }
+
+      container.innerHTML = pros.map((p, idx) => {
+        const proName = formatTurkishTitleCase(p.name_tr || p.name_en || 'Profesyonel');
+        const firstName = proName.split(' ')[0] || proName;
+        const phone = cleanPhoneForWa(p.whatsapp);
+        const personalizedMsg = template
+          .replace(/\{ad\}/gi, firstName)
+          .replace(/\{adsoyad\}/gi, proName)
+          .replace(/\{turnuva\}/gi, tourName);
+
+        const waUrl = phone
+          ? `https://wa.me/${phone}?text=${encodeURIComponent(personalizedMsg)}`
+          : '';
+
+        return `
+          <div class="p-3.5 sm:px-5 flex items-center justify-between gap-4 hover:bg-white transition">
+            <div class="min-w-0">
+              <p class="text-sm font-semibold text-[#122921] truncate">${idx + 1}. ${proName}</p>
+              <p class="text-xs text-stone-500">${phone ? `+${phone}` : 'WhatsApp numarası kayıtlı değil'}</p>
+            </div>
+            ${
+              waUrl
+                ? `<a href="${waUrl}" target="_blank" rel="noopener noreferrer" onclick="this.classList.remove('bg-[#25D366]','hover:bg-[#20ba5a]');this.classList.add('bg-stone-600','hover:bg-stone-700');this.textContent='✓ Açıldı';" class="shrink-0 px-4 py-2 rounded-lg bg-[#25D366] hover:bg-[#20ba5a] text-white text-xs font-medium transition shadow-sm">WhatsApp Aç</a>`
+                : `<span class="shrink-0 text-xs text-stone-400">Numara yok</span>`
+            }
+          </div>
+        `;
+      }).join('');
     }
 
     window.addEventListener('DOMContentLoaded', initApp);
