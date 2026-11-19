@@ -663,6 +663,7 @@
     function getTournamentLink(rawObj) {
       if (!rawObj) return '';
       const candidates = [
+        rawObj.details_url,
         rawObj.url,
         rawObj.link,
         rawObj.website_url,
