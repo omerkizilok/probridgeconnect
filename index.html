@@ -8,73 +8,84 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --emerald-deep: #0F3D2E;
+      --emerald-vivid: #14533E;
+      --gold-rich: #C69214;
+      --gold-bright: #E5B83B;
+      --ivory-bg: #FBF9F4;
+      --ivory-soft: #F3EFE4;
+    }
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #FAF9F6;
-      color: #1A1F1D;
+      background-color: var(--ivory-bg);
+      color: #16201C;
     }
     .font-serif-luxury {
       font-family: 'Cormorant Garamond', serif;
     }
     .gold-border {
-      border-color: rgba(180, 148, 90, 0.35);
+      border-color: rgba(198, 146, 20, 0.42);
     }
     .emerald-bg {
-      background-color: #122921;
+      background: linear-gradient(135deg, var(--emerald-deep) 0%, var(--emerald-vivid) 100%);
     }
     .gold-text {
-      color: #9E7E43;
+      color: var(--gold-rich);
+    }
+    .gold-bright-text {
+      color: var(--gold-bright);
     }
     .gold-bg {
-      background-color: #9E7E43;
+      background-color: var(--gold-rich);
     }
     .gold-bg:hover {
-      background-color: #876A35;
+      background-color: #AD7E0D;
     }
   </style>
 </head>
-<body class="antialiased selection:bg-[#122921] selection:text-white">
+<body class="antialiased selection:bg-[#14533E] selection:text-[#FDE68A]">
 
   <!-- Üst Menü / Header -->
-  <header class="sticky top-0 z-40 bg-[#FAF9F6]/95 backdrop-blur-md border-b border-stone-200/80">
+  <header class="sticky top-0 z-40 bg-[#FBF9F4]/95 backdrop-blur-md border-b border-[#C69214]/25 shadow-xs">
     <!-- Sağ Üst Zarif İmza Şeridi -->
-    <div class="border-b border-stone-200/50 bg-[#F4F1EA]/60">
+    <div class="border-b border-[#C69214]/15 bg-[#F3EFE4]/80">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-6 flex items-center justify-end">
-        <span class="text-[10px] tracking-[0.18em] text-stone-400 font-light">
-          POWERED BY <span class="font-serif-luxury italic text-xs tracking-normal text-[#9E7E43] font-semibold ml-0.5">Ömer Kızılok</span>
+        <span class="text-[10px] tracking-[0.18em] text-stone-500 font-normal">
+          POWERED BY <span class="font-serif-luxury italic text-xs tracking-normal text-[#C69214] font-semibold ml-0.5">Ömer Kızılok</span>
         </span>
       </div>
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-full emerald-bg flex items-center justify-center text-[#D4AF37] font-serif-luxury text-xl font-bold shadow-sm">
+        <div class="w-9 h-9 rounded-full emerald-bg flex items-center justify-center text-[#F5C842] font-serif-luxury text-xl font-bold shadow-sm ring-1 ring-[#E5B83B]/50">
           ♠
         </div>
         <div>
-          <span class="font-serif-luxury text-2xl font-bold tracking-tight text-[#122921]">ProBridge</span>
-          <span class="text-xs uppercase tracking-[0.2em] text-stone-500 ml-1.5 font-medium">Connect</span>
+          <span class="font-serif-luxury text-2xl font-bold tracking-tight text-[#0F3D2E]">ProBridge</span>
+          <span class="text-xs uppercase tracking-[0.2em] text-[#C69214] ml-1.5 font-semibold">Connect</span>
         </div>
       </a>
 
       <!-- Masaüstü Orta Menü -->
       <nav class="hidden md:flex items-center gap-7 text-xs lg:text-sm font-medium text-stone-600">
-        <a href="index.html" class="text-[#122921] font-semibold border-b-2 border-[#9E7E43] pb-1" data-i18n="navHome">Ana Sayfa</a>
-        <a href="profesyonel-bric.html" class="hover:text-[#122921] transition" data-i18n="navProBridge">Profesyonel Briç Nedir?</a>
-        <a href="takvim.html" class="hover:text-[#122921] transition" data-i18n="navCalendar">Turnuva Takvimi</a>
-        <a href="hakkinda.html" class="hover:text-[#122921] transition" data-i18n="navAbout">Hakkımızda</a>
+        <a href="index.html" class="text-[#0F3D2E] font-semibold border-b-2 border-[#D4A017] pb-1" data-i18n="navHome">Ana Sayfa</a>
+        <a href="profesyonel-bric.html" class="hover:text-[#14533E] transition" data-i18n="navProBridge">Profesyonel Briç Nedir?</a>
+        <a href="takvim.html" class="hover:text-[#14533E] transition" data-i18n="navCalendar">Turnuva Takvimi</a>
+        <a href="hakkinda.html" class="hover:text-[#14533E] transition" data-i18n="navAbout">Hakkımızda</a>
       </nav>
 
       <div class="flex items-center gap-3 sm:gap-5">
         <!-- Dil Değiştirici -->
-        <div class="flex items-center bg-stone-200/70 rounded-full p-0.5 text-xs font-medium">
-          <button id="btn-tr" onclick="setLang('tr')" class="px-3 py-1 rounded-full bg-[#122921] text-white transition">TR</button>
-          <button id="btn-en" onclick="setLang('en')" class="px-3 py-1 rounded-full text-stone-600 hover:text-stone-900 transition">EN</button>
+        <div class="flex items-center bg-[#F3EFE4] border border-[#C69214]/30 rounded-full p-0.5 text-xs font-medium">
+          <button id="btn-tr" onclick="setLang('tr')" class="px-3 py-1 rounded-full emerald-bg text-[#FDE68A] font-semibold transition">TR</button>
+          <button id="btn-en" onclick="setLang('en')" class="px-3 py-1 rounded-full text-stone-600 hover:text-[#0F3D2E] transition">EN</button>
         </div>
 
         <!-- Kullanıcı Durumu / Giriş Butonu -->
         <div id="auth-nav-area">
-          <button onclick="openAuthModal()" class="text-xs sm:text-sm font-medium px-4 py-2 rounded-full border border-[#122921] text-[#122921] hover:bg-[#122921] hover:text-white transition" data-i18n="navJoin">
+          <button onclick="openAuthModal()" class="text-xs sm:text-sm font-semibold px-4 py-2 rounded-full border border-[#14533E] text-[#0F3D2E] hover:emerald-bg hover:text-[#FDE68A] transition shadow-2xs" data-i18n="navJoin">
             Profesyonel Girişi / Kayıt
           </button>
         </div>
@@ -82,24 +93,24 @@
     </div>
 
     <!-- Mobil Alt Menü -->
-    <nav class="md:hidden flex items-center gap-5 px-4 py-2.5 border-t border-stone-200/60 overflow-x-auto whitespace-nowrap text-xs font-medium text-stone-600">
-      <a href="index.html" class="text-[#122921] font-semibold" data-i18n="navHome">Ana Sayfa</a>
-      <a href="profesyonel-bric.html" class="hover:text-[#122921]" data-i18n="navProBridge">Profesyonel Briç Nedir?</a>
-      <a href="takvim.html" class="hover:text-[#122921]" data-i18n="navCalendar">Turnuva Takvimi</a>
-      <a href="hakkinda.html" class="hover:text-[#122921]" data-i18n="navAbout">Hakkımızda</a>
+    <nav class="md:hidden flex items-center gap-5 px-4 py-2.5 border-t border-[#C69214]/20 bg-[#FBF9F4] overflow-x-auto whitespace-nowrap text-xs font-medium text-stone-600">
+      <a href="index.html" class="text-[#0F3D2E] font-semibold" data-i18n="navHome">Ana Sayfa</a>
+      <a href="profesyonel-bric.html" class="hover:text-[#14533E]" data-i18n="navProBridge">Profesyonel Briç Nedir?</a>
+      <a href="takvim.html" class="hover:text-[#14533E]" data-i18n="navCalendar">Turnuva Takvimi</a>
+      <a href="hakkinda.html" class="hover:text-[#14533E]" data-i18n="navAbout">Hakkımızda</a>
     </nav>
   </header>
 
   <!-- Hero Bölümü -->
-  <section class="relative overflow-hidden border-b border-stone-200/70 bg-gradient-to-b from-[#F4F1EA] to-[#FAF9F6] py-16 sm:py-24">
+  <section class="relative overflow-hidden border-b border-[#C69214]/25 bg-gradient-to-b from-[#F3EFE4] via-[#F8F5EC] to-[#FBF9F4] py-16 sm:py-24">
     <div class="max-w-4xl mx-auto px-4 text-center">
-      <p class="text-xs uppercase tracking-[0.25em] gold-text font-semibold mb-4" data-i18n="heroBadge">
+      <p class="text-xs uppercase tracking-[0.25em] text-[#B8840C] font-bold mb-4" data-i18n="heroBadge">
         PROFESYONEL BRİÇ PARTNERLİĞİ VE SPONSORLUK PLATFORMU
       </p>
-      <h1 class="font-serif-luxury text-4xl sm:text-6xl font-semibold text-[#122921] leading-tight mb-6" data-i18n="heroTitle">
+      <h1 class="font-serif-luxury text-4xl sm:text-6xl font-semibold text-[#0F3D2E] leading-tight mb-6" data-i18n="heroTitle">
         Ulusal ve Uluslararası Turnuvalar İçin Profesyonel Partnerlikler
       </h1>
-      <p class="text-stone-600 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed font-light" data-i18n="heroSubtitle">
+      <p class="text-stone-600 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed font-normal" data-i18n="heroSubtitle">
         Tbf turnuva/festivalleri ve uluslararası şampiyonalarda rekabet etmek isteyen sponsorlar ile Türkiye'nin seçkin briç profesyonellerini buluşturan özel ağ.
       </p>
     </div>
@@ -107,17 +118,17 @@
 
   <!-- 1. Turnuva Takvimi & Filtre Tablosu -> 2. Kadro Başlığı -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6">
-    <div class="border-b border-stone-200 pb-8 space-y-6">
+    <div class="border-b border-[#C69214]/25 pb-8 space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
         <div>
-          <p class="text-[11px] uppercase tracking-[0.2em] gold-text font-semibold mb-1" data-i18n="tourTableBadge">
+          <p class="text-[11px] uppercase tracking-[0.2em] text-[#B8840C] font-bold mb-1" data-i18n="tourTableBadge">
             TURNUVA TAKVİMİ & PARTNER FİLTRESİ
           </p>
-          <p class="text-base sm:text-xl font-semibold text-[#122921] tracking-tight" data-i18n="rosterSub">
+          <p class="text-base sm:text-xl font-semibold text-[#0F3D2E] tracking-tight" data-i18n="rosterSub">
             Turnuva seçerek müsait olan profesyonelleri filtreleyebilirsiniz.
           </p>
         </div>
-        <button id="btn-reset-filter" onclick="filterTournament('all')" class="hidden self-start sm:self-auto text-xs font-medium px-3.5 py-1.5 rounded-full border border-[#9E7E43]/50 text-[#9E7E43] hover:bg-[#122921] hover:text-white hover:border-[#122921] transition" data-i18n="clearFilterBtn">
+        <button id="btn-reset-filter" onclick="filterTournament('all')" class="hidden self-start sm:self-auto text-xs font-semibold px-3.5 py-1.5 rounded-full border border-[#C69214] bg-[#FFFBEB] text-[#9A6E05] hover:emerald-bg hover:text-[#FDE68A] hover:border-[#14533E] transition" data-i18n="clearFilterBtn">
           ✕ Filtreyi Temizle (Tümünü Göster)
         </button>
       </div>
@@ -128,10 +139,10 @@
       </div>
 
       <div class="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <h2 class="font-serif-luxury text-3xl sm:text-4xl font-semibold text-[#122921]" data-i18n="rosterTitle">
+        <h2 class="font-serif-luxury text-3xl sm:text-4xl font-semibold text-[#0F3D2E]" data-i18n="rosterTitle">
           Profesyonel Oyuncu Kadromuz
         </h2>
-        <p id="active-filter-caption" class="text-xs text-stone-500"></p>
+        <p id="active-filter-caption" class="text-xs font-medium text-stone-500"></p>
       </div>
     </div>
   </section>
@@ -153,7 +164,7 @@
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4 mb-6">
         <div>
           <p class="text-xs uppercase tracking-widest gold-text font-semibold">ORGANİZATÖR / YÖNETİCİ ARACI</p>
-          <h3 class="font-serif-luxury text-2xl sm:text-3xl font-semibold text-[#122921]">Yeni Turnuva WhatsApp Duyurusu</h3>
+          <h3 class="font-serif-luxury text-2xl sm:text-3xl font-semibold text-[#0F3D2E]">Yeni Turnuva WhatsApp Duyurusu</h3>
         </div>
         <span class="text-xs text-stone-500">Her tıklamada mesajı hazır açar</span>
       </div>
@@ -176,7 +187,7 @@
         <textarea id="wa-template" rows="2" oninput="renderWaBroadcastList()" class="w-full px-3.5 py-2.5 rounded-lg border border-stone-300 bg-white text-sm">Merhaba {ad}, ProBridge Connect takvimine "{turnuva}" eklendi. Müsaitlik durumunu profilinden işaretleyebilirsin: https://probridgeconnect.com.tr</textarea>
       </div>
 
-      <div id="wa-broadcast-list" class="divide-y divide-stone-100 border border-stone-200/80 rounded-xl overflow-hidden bg-[#FAF9F6]">
+      <div id="wa-broadcast-list" class="divide-y divide-stone-100 border border-stone-200/80 rounded-xl overflow-hidden bg-[#FBF9F4]">
         <!-- Pro listesi JS ile doldurulacak -->
       </div>
     </div>
@@ -186,9 +197,9 @@
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4 mb-6">
         <div>
           <p class="text-xs uppercase tracking-widest gold-text font-semibold">PROFİL ONAY BİLDİRİMİ</p>
-          <h3 class="font-serif-luxury text-2xl sm:text-3xl font-semibold text-[#122921]">Profil Onayı WhatsApp Mesajı</h3>
+          <h3 class="font-serif-luxury text-2xl sm:text-3xl font-semibold text-[#0F3D2E]">Profil Onayı WhatsApp Mesajı</h3>
         </div>
-        <button type="button" onclick="loadApprovalProfiles()" class="text-xs px-3 py-1.5 rounded-lg border border-stone-300 text-stone-700 hover:border-[#122921] transition self-start sm:self-auto">
+        <button type="button" onclick="loadApprovalProfiles()" class="text-xs px-3 py-1.5 rounded-lg border border-stone-300 text-stone-700 hover:border-[#14533E] transition self-start sm:self-auto">
           Listeyi Yenile
         </button>
       </div>
@@ -198,20 +209,20 @@
         <textarea id="wa-approval-template" rows="2" oninput="renderApprovalWaList()" class="w-full px-3.5 py-2.5 rounded-lg border border-stone-300 bg-white text-sm">Merhaba {ad}, ProBridge Connect üzerindeki profesyonel profiliniz onaylandı ve kadroda yayınlandı! Turnuva müsaitliklerinizi profilinizden güncelleyebilirsiniz: https://probridgeconnect.com.tr</textarea>
       </div>
 
-      <div id="wa-approval-list" class="divide-y divide-stone-100 border border-stone-200/80 rounded-xl overflow-hidden bg-[#FAF9F6]">
+      <div id="wa-approval-list" class="divide-y divide-stone-100 border border-stone-200/80 rounded-xl overflow-hidden bg-[#FBF9F4]">
         <!-- Profiller JS ile doldurulacak -->
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="emerald-bg text-stone-300 py-12 border-t border-stone-800">
+  <footer class="emerald-bg text-stone-300 py-12 border-t border-[#E5B83B]/30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
       <div class="flex items-center gap-2.5">
-        <span class="text-[#D4AF37] font-serif-luxury text-xl">♠</span>
+        <span class="text-[#F5C842] font-serif-luxury text-xl">♠</span>
         <span class="font-serif-luxury text-xl text-white font-semibold">ProBridge Connect</span>
       </div>
-      <p class="text-xs text-stone-400" data-i18n="footerNote">
+      <p class="text-xs text-stone-300/80" data-i18n="footerNote">
         © 2026 ProBridge Connect. Tüm görüşmeler gizlilik esasına göre doğrudan profesyonel ve sponsor arasında yürütülür.
       </p>
     </div>
@@ -219,7 +230,7 @@
 
   <!-- 1. MODAL: Oyuncu Detay Profili -->
   <div id="profile-modal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-[#FAF9F6] rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border gold-border p-6 sm:p-8 relative">
+    <div class="bg-[#FBF9F4] rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border gold-border p-6 sm:p-8 relative">
       <button onclick="closeModal('profile-modal')" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-stone-200/80 hover:bg-stone-300 flex items-center justify-center text-stone-700">✕</button>
       <div id="profile-modal-content"></div>
     </div>
@@ -227,14 +238,14 @@
 
   <!-- 3. MODAL: Profesyonel Giriş / Kayıt & Profil Düzenleme -->
   <div id="auth-modal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-[#FAF9F6] rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border gold-border p-6 sm:p-8 relative">
+    <div class="bg-[#FBF9F4] rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border gold-border p-6 sm:p-8 relative">
       <button onclick="closeModal('auth-modal')" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-stone-200/80 hover:bg-stone-300 flex items-center justify-center text-stone-700">✕</button>
 
       <!-- E-postadaki Sıfırlama Bağlantısından Gelince Açılan Yeni Şifre Ekranı -->
       <div id="recovery-container" class="hidden space-y-4">
         <div class="border-b border-stone-200 pb-3">
           <p class="text-xs uppercase tracking-widest gold-text font-semibold">ŞİFRE SIFIRLAMA</p>
-          <h3 class="font-serif-luxury text-2xl font-semibold text-[#122921]">Yeni Şifre Belirle</h3>
+          <h3 class="font-serif-luxury text-2xl font-semibold text-[#0F3D2E]">Yeni Şifre Belirle</h3>
         </div>
         <p class="text-xs text-stone-600 leading-relaxed">
           E-postanızdaki bağlantı doğrulandı. Hesabınız için yeni şifrenizi aşağıdan belirleyebilirsiniz.
@@ -256,7 +267,7 @@
       <!-- Giriş / Kayıt Sekmeleri -->
       <div id="auth-forms-container">
         <div class="flex gap-4 border-b border-stone-200 pb-3 mb-6">
-          <button id="tab-login" onclick="switchAuthTab('login')" class="text-sm font-semibold text-[#122921] border-b-2 border-[#122921] pb-1">Giriş Yap</button>
+          <button id="tab-login" onclick="switchAuthTab('login')" class="text-sm font-semibold text-[#0F3D2E] border-b-2 border-[#14533E] pb-1">Giriş Yap</button>
           <button id="tab-signup" onclick="switchAuthTab('signup')" class="text-sm font-medium text-stone-500 pb-1">Yeni Profesyonel Kaydı</button>
         </div>
 
@@ -269,7 +280,7 @@
           <div>
             <div class="flex items-center justify-between mb-1">
               <label class="block text-xs font-medium text-stone-700">Şifre</label>
-              <button type="button" onclick="sendForgotPasswordEmail()" class="text-xs font-medium text-[#9E7E43] hover:underline">
+              <button type="button" onclick="sendForgotPasswordEmail()" class="text-xs font-semibold text-[#B8840C] hover:underline">
                 Şifremi Unuttum
               </button>
             </div>
@@ -281,12 +292,12 @@
 
         <!-- Kayıt Formu -->
         <form id="signup-form" onsubmit="handleSignup(event)" class="space-y-4 hidden">
-          <div class="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs leading-relaxed">
+          <div class="p-3 rounded-lg bg-amber-50 border border-amber-300 text-amber-950 text-xs leading-relaxed">
             ℹ️ Kayıt olduktan sonra profiliniz yönetici onayından geçene kadar bekleme modunda kalacak, onaylandığında kadroda yayınlanacaktır.
           </div>
           <div>
             <label class="block text-xs font-medium text-stone-700 mb-1">Profil Fotoğrafı (İsteğe bağlı)</label>
-            <input type="file" id="reg-photo" accept="image/*" class="w-full text-xs text-stone-600 file:mr-3 file:py-2 file:px-3.5 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-[#122921] file:text-white hover:file:opacity-90">
+            <input type="file" id="reg-photo" accept="image/*" class="w-full text-xs text-stone-600 file:mr-3 file:py-2 file:px-3.5 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-[#14533E] file:text-white hover:file:opacity-90">
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
@@ -352,23 +363,23 @@
         <div class="flex items-center justify-between border-b border-stone-200 pb-4 mb-5">
           <div>
             <p class="text-xs uppercase tracking-widest gold-text font-semibold">PROFESYONEL PANELİ</p>
-            <h3 id="dash-user-name" class="font-serif-luxury text-2xl font-semibold text-[#122921]">Hoş Geldiniz</h3>
+            <h3 id="dash-user-name" class="font-serif-luxury text-2xl font-semibold text-[#0F3D2E]">Hoş Geldiniz</h3>
           </div>
           <button onclick="handleLogout()" class="text-xs text-red-600 hover:underline">Çıkış Yap</button>
         </div>
 
-        <div id="approval-notice" class="hidden mb-4 p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs">
+        <div id="approval-notice" class="hidden mb-4 p-3 rounded-lg bg-amber-50 border border-amber-300 text-amber-950 text-xs">
           ⏳ Profiliniz henüz yönetici onayından geçmemiştir. Onaylandığında kadroda yayınlanacaktır.
         </div>
 
         <form onsubmit="saveProfileUpdates(event)" class="space-y-4">
           <div class="flex items-center gap-4 p-3 rounded-xl bg-white border border-stone-200">
-            <div id="edit-avatar-preview" class="w-14 h-14 rounded-full emerald-bg text-[#D4AF37] font-serif-luxury text-xl font-bold flex items-center justify-center shrink-0 overflow-hidden border border-[#9E7E43]/40">
+            <div id="edit-avatar-preview" class="w-14 h-14 rounded-full emerald-bg text-[#F5C842] font-serif-luxury text-xl font-bold flex items-center justify-center shrink-0 overflow-hidden border border-[#E5B83B]/50">
               ÖK
             </div>
             <div class="flex-1">
-              <label class="block text-xs font-semibold text-[#122921] mb-1">Profil Fotoğrafı</label>
-              <input type="file" id="edit-photo" accept="image/*" onchange="previewSelectedPhoto(event)" class="w-full text-xs text-stone-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-[#122921] file:text-white hover:file:opacity-90 cursor-pointer">
+              <label class="block text-xs font-semibold text-[#0F3D2E] mb-1">Profil Fotoğrafı</label>
+              <input type="file" id="edit-photo" accept="image/*" onchange="previewSelectedPhoto(event)" class="w-full text-xs text-stone-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-[#14533E] file:text-white hover:file:opacity-90 cursor-pointer">
             </div>
           </div>
 
@@ -410,7 +421,7 @@
           </div>
 
           <div class="pt-2">
-            <label class="block text-xs font-semibold text-[#122921] mb-2">Turnuva Müsaitlik Durumunuz:</label>
+            <label class="block text-xs font-semibold text-[#0F3D2E] mb-2">Turnuva Müsaitlik Durumunuz:</label>
             <div id="edit-tournament-checkboxes" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
               <!-- Dinamik doldurulacak -->
             </div>
@@ -430,7 +441,7 @@
               <label class="block text-xs font-medium text-stone-700 mb-1">Yeni Şifre (En az 6 karakter)</label>
               <input type="password" id="new-password" placeholder="••••••••" minlength="6" class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm">
             </div>
-            <button type="button" onclick="updatePassword()" class="py-2 px-4 rounded-lg border border-[#122921] text-[#122921] text-xs font-medium hover:bg-[#122921] hover:text-white transition">
+            <button type="button" onclick="updatePassword()" class="py-2 px-4 rounded-lg border border-[#14533E] text-[#0F3D2E] text-xs font-medium hover:emerald-bg hover:text-white transition">
               Şifreyi Güncelle
             </button>
           </div>
@@ -488,7 +499,7 @@
         .join(' ');
     }
 
-    /* --- TURNUVA AD, YER VE TARİH AYRIŞTIRICI + KRONOLOJİK SIRALAMA --- */
+    /* --- TURNUVA AD, YER VE TARİH SÜTUNLARI + KRONOLOJİK SIRALAMA --- */
     const MONTH_PATTERNS = [
       { key: 'aralık', num: 12 }, { key: 'aralik', num: 12 }, { key: 'december', num: 12 }, { key: 'dec', num: 12 },
       { key: 'ocak', num: 1 }, { key: 'january', num: 1 }, { key: 'jan', num: 1 },
@@ -504,8 +515,6 @@
       { key: 'kasım', num: 11 }, { key: 'kasim', num: 11 }, { key: 'november', num: 11 }, { key: 'nov', num: 11 }
     ];
 
-    const MONTH_REGEX = /(Ocak|Oca|Şubat|Şub|Mart|Mar|Nisan|Nis|Mayıs|May|Haziran|Haz|Temmuz|Tem|Ağustos|Ağu|Eylül|Eyl|Ekim|Eki|Kasım|Kas|Aralık|Ara|January|Jan|February|Feb|March|April|Apr|June|Jun|July|Jul|August|Aug|September|Sep|October|Oct|November|Nov|December|Dec)/i;
-
     function detectMonthNumber(text) {
       const lower = (text || '').toLocaleLowerCase('tr-TR');
       for (const m of MONTH_PATTERNS) {
@@ -516,7 +525,7 @@
     }
 
     function computeChronoScore(dateStr, fallbackOrder = 999) {
-      if (!dateStr) return 99999999 + fallbackOrder;
+      if (!dateStr || dateStr === '—') return 99999999 + fallbackOrder;
       const month = detectMonthNumber(dateStr);
       if (!month) return 99999999 + fallbackOrder;
 
@@ -528,73 +537,9 @@
       if (explicitYearMatch) {
         year = parseInt(explicitYearMatch[1], 10);
       } else {
-        // Sezon mantığı: Aralık (12) mevcut sezon başlangıcı (2026), Ocak-Kasım sonraki yıl (2027)
         year = month === 12 ? 2026 : 2027;
       }
       return year * 10000 + month * 100 + day;
-    }
-
-    function parseTournamentDetails(t, lang = 'tr') {
-      const raw = (lang === 'tr' ? (t.name_tr || t.name_en) : (t.name_en || t.name_tr)) || '';
-      const slashParts = raw.split('/').map(s => s.trim()).filter(Boolean);
-
-      let location = (lang === 'tr' ? (t.location_tr || t.location) : (t.location_en || t.location_tr || t.location)) || '';
-      let datePart = (lang === 'tr' ? (t.date_tr || t.date_text) : (t.date_en || t.date_tr || t.date_text)) || '';
-      let namePart = '';
-
-      if (slashParts.length >= 3) {
-        datePart = datePart || slashParts[0];
-        namePart = slashParts.slice(1, -1).join(' / ');
-        location = location || slashParts[slashParts.length - 1];
-      } else if (slashParts.length === 2) {
-        const firstHasMonth = MONTH_REGEX.test(slashParts[0]);
-        const secondHasMonth = MONTH_REGEX.test(slashParts[1]);
-        if (firstHasMonth && !secondHasMonth) {
-          location = location || slashParts[1];
-          namePart = slashParts[0];
-        } else if (secondHasMonth && !firstHasMonth) {
-          namePart = slashParts[0];
-          datePart = datePart || slashParts[1];
-        } else {
-          namePart = slashParts[0];
-          location = location || slashParts[1];
-        }
-      } else {
-        namePart = raw;
-      }
-
-      if (!datePart && namePart) {
-        // Örn: "23 Haz-7 Tem-Avrupa Açık Şampiyonaları" veya "5-6 Aralık İnönü İkili Turnuvası" veya "11–25 Şubat- Avrupa Kış..."
-        const crossMonthRe = new RegExp(`^(\\d{1,2}\\s*[–\\-]\\s*\\d{1,2}\\s*${MONTH_REGEX.source}\\s*[–\\-]\\s*\\d{1,2}\\s*${MONTH_REGEX.source}|\\d{1,2}\\s*${MONTH_REGEX.source}\\s*[–\\-]\\s*\\d{1,2}\\s*${MONTH_REGEX.source})(?:\\s*[–\\-]\\s*|\\s+)(.+)$`, 'i');
-        const singleMonthRe = new RegExp(`^(\\d{1,2}(?:\\s*[–\\-]\\s*\\d{1,2})*\\s*${MONTH_REGEX.source}(?:\\s+20\\d{2})?)(?:\\s*[–\\-]\\s*|\\s+)(.+)$`, 'i');
-
-        const mCross = namePart.match(crossMonthRe);
-        if (mCross) {
-          datePart = mCross[1].replace(/\s*[–\-]\s*/g, ' – ').trim();
-          namePart = mCross[4].trim();
-        } else {
-          const mSingle = namePart.match(singleMonthRe);
-          if (mSingle) {
-            datePart = mSingle[1].replace(/\s*[–\-]\s*/g, '–').trim();
-            namePart = mSingle[3].trim();
-          }
-        }
-      }
-
-      namePart = namePart.replace(/^[\-–\s]+|[\-–\s]+$/g, '') || raw;
-      datePart = datePart || '—';
-      location = location ? formatLocationLabel(location) : '—';
-
-      const chronoScore = computeChronoScore(datePart, t.display_order || 999);
-
-      return {
-        id: t.id,
-        name: namePart,
-        location,
-        date: datePart,
-        chronoScore,
-        raw
-      };
     }
 
     function formatLocationLabel(loc) {
@@ -605,6 +550,39 @@
         return formatTurkishTitleCase(trimmed);
       }
       return trimmed;
+    }
+
+    function parseTournamentDetails(t, lang = 'tr') {
+      const rawName = (lang === 'tr' ? (t.name_tr || t.name_en) : (t.name_en || t.name_tr)) || '';
+      const explicitLoc = (t.location_tr || t.location_en || t.location || '').trim();
+      const explicitDate = (t.date_tr || t.date_en || t.date_text || '').trim();
+
+      let namePart = rawName.trim();
+      let location = explicitLoc ? formatLocationLabel(explicitLoc) : '';
+      let datePart = explicitDate;
+
+      if (!location || !datePart) {
+        const parts = rawName.split('/').map(s => s.trim()).filter(Boolean);
+        if (parts.length >= 2 && !location) {
+          location = formatLocationLabel(parts[parts.length - 1]);
+          namePart = parts.slice(0, -1).join(' / ');
+        }
+      }
+
+      namePart = namePart || rawName;
+      location = location || '—';
+      datePart = datePart || '—';
+
+      const chronoScore = computeChronoScore(datePart, t.display_order || 999);
+
+      return {
+        id: t.id,
+        name: namePart,
+        location,
+        date: datePart,
+        chronoScore,
+        raw: rawName
+      };
     }
 
     function getSortedTournaments(lang = currentLang) {
@@ -639,8 +617,8 @@
     }
 
     const fallbackTournaments = [
-      { id: 't1', name_tr: '5-6 Aralık İnönü İkili Turnuvası/ANKARA', name_en: 'Dec Inonu Pairs' },
-      { id: 't2', name_tr: '9-11 Aralık Mix Takımlar Şampiyonası/İSTANBUL', name_en: 'Dec Mix Teams' }
+      { id: 't1', name_tr: 'İnönü İkili Turnuvası', location_tr: 'Ankara', date_tr: '5–6 Aralık', name_en: 'Dec Inonu Pairs' },
+      { id: 't2', name_tr: 'Mix Takımlar Şampiyonası', location_tr: 'İstanbul', date_tr: '9–11 Aralık', name_en: 'Dec Mix Teams' }
     ];
 
     const fallbackPlayers = [
@@ -727,13 +705,13 @@
 
       const btnSize = isModal ? 'w-10 h-10' : 'w-9 h-9';
       const emailBtnHtml = mailLink
-        ? `<a href="${mailLink}" title="${emailAddr}" aria-label="E-posta" class="${btnSize} rounded-lg border border-[#122921]/25 bg-[#F4F1EA] hover:bg-[#122921] text-[#122921] hover:text-white flex items-center justify-center transition shadow-sm">${mailIconSvg}</a>`
+        ? `<a href="${mailLink}" title="${emailAddr}" aria-label="E-posta" class="${btnSize} rounded-lg border border-[#C69214]/45 bg-[#FFFBEB] hover:emerald-bg text-[#0F3D2E] hover:text-[#FDE68A] flex items-center justify-center transition shadow-2xs">${mailIconSvg}</a>`
         : '';
 
       return `
         <div class="flex items-center gap-2">
           <span class="text-xs font-medium text-stone-500">${i18n[currentLang].contactLabel}</span>
-          <a href="${waLink}" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="WhatsApp" class="${btnSize} rounded-lg bg-[#25D366] hover:bg-[#20ba5a] text-white flex items-center justify-center transition shadow-sm">
+          <a href="${waLink}" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="WhatsApp" class="${btnSize} rounded-lg bg-[#16A34A] hover:bg-[#15803D] text-white flex items-center justify-center transition shadow-2xs">
             ${whatsappIconSvg}
           </a>
           ${emailBtnHtml}
@@ -797,11 +775,11 @@
       const name = formatTurkishTitleCase(player.name_tr || 'Pro');
       const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toLocaleUpperCase('tr-TR');
       if (player.avatar_url) {
-        return `<div class="${sizeClass} rounded-full overflow-hidden shrink-0 border border-[#9E7E43]/40 shadow-sm bg-stone-200">
+        return `<div class="${sizeClass} rounded-full overflow-hidden shrink-0 border-2 border-[#E5B83B]/70 shadow-sm bg-stone-200">
           <img src="${player.avatar_url}" alt="${name}" class="w-full h-full object-cover">
         </div>`;
       }
-      return `<div class="${sizeClass} rounded-full emerald-bg text-[#D4AF37] font-serif-luxury ${textClass} font-bold flex items-center justify-center shrink-0">
+      return `<div class="${sizeClass} rounded-full emerald-bg text-[#F5C842] font-serif-luxury ${textClass} font-bold flex items-center justify-center shrink-0 ring-1 ring-[#E5B83B]/50">
         ${initials}
       </div>`;
     }
@@ -809,8 +787,8 @@
     function setLang(lang) {
       currentLang = lang;
       localStorage.setItem('pbc_lang', lang);
-      document.getElementById('btn-tr').className = lang === 'tr' ? 'px-3 py-1 rounded-full bg-[#122921] text-white transition' : 'px-3 py-1 rounded-full text-stone-600 hover:text-stone-900 transition';
-      document.getElementById('btn-en').className = lang === 'en' ? 'px-3 py-1 rounded-full bg-[#122921] text-white transition' : 'px-3 py-1 rounded-full text-stone-600 hover:text-stone-900 transition';
+      document.getElementById('btn-tr').className = lang === 'tr' ? 'px-3 py-1 rounded-full emerald-bg text-[#FDE68A] font-semibold transition' : 'px-3 py-1 rounded-full text-stone-600 hover:text-[#0F3D2E] transition';
+      document.getElementById('btn-en').className = lang === 'en' ? 'px-3 py-1 rounded-full emerald-bg text-[#FDE68A] font-semibold transition' : 'px-3 py-1 rounded-full text-stone-600 hover:text-[#0F3D2E] transition';
 
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
@@ -831,8 +809,8 @@
       const savedLang = localStorage.getItem('pbc_lang') || 'tr';
       if (savedLang !== 'tr') {
         currentLang = savedLang;
-        document.getElementById('btn-tr').className = 'px-3 py-1 rounded-full text-stone-600 hover:text-stone-900 transition';
-        document.getElementById('btn-en').className = 'px-3 py-1 rounded-full bg-[#122921] text-white transition';
+        document.getElementById('btn-tr').className = 'px-3 py-1 rounded-full text-stone-600 hover:text-[#0F3D2E] transition';
+        document.getElementById('btn-en').className = 'px-3 py-1 rounded-full emerald-bg text-[#FDE68A] font-semibold transition';
         document.querySelectorAll('[data-i18n]').forEach(el => {
           const key = el.getAttribute('data-i18n');
           if (i18n[savedLang][key]) el.textContent = i18n[savedLang][key];
@@ -878,14 +856,14 @@
 
       const allRowActive = currentFilter === 'all';
       const allRowHtml = `
-        <tr onclick="filterTournament('all')" class="cursor-pointer transition-colors ${allRowActive ? 'bg-[#122921] text-white' : 'bg-[#F4F1EA]/55 hover:bg-[#F4F1EA] text-[#122921]'}">
-          <td colspan="3" class="px-4 sm:px-6 py-3 text-xs sm:text-sm font-semibold">
+        <tr onclick="filterTournament('all')" class="cursor-pointer transition-colors ${allRowActive ? 'emerald-bg text-white' : 'bg-[#F3EFE4]/70 hover:bg-[#F3EFE4] text-[#0F3D2E]'}">
+          <td colspan="3" class="px-4 sm:px-6 py-3.5 text-xs sm:text-sm font-semibold">
             <div class="flex items-center justify-between gap-2">
               <div class="flex items-center gap-2.5">
-                <span class="w-4 h-4 rounded-full flex items-center justify-center text-[10px] border ${allRowActive ? 'border-[#D4AF37] bg-[#D4AF37] text-[#122921] font-bold' : 'border-stone-400 text-transparent'}">✓</span>
+                <span class="w-4 h-4 rounded-full flex items-center justify-center text-[10px] border ${allRowActive ? 'border-[#F5C842] bg-[#F5C842] text-[#0F3D2E] font-bold' : 'border-[#C69214]/60 text-transparent'}">✓</span>
                 <span>${tDict.allToursRowTitle}</span>
               </div>
-              <span class="text-[11px] uppercase tracking-wider ${allRowActive ? 'text-[#D4AF37]' : 'text-stone-400'}">
+              <span class="text-[11px] uppercase tracking-wider font-bold ${allRowActive ? 'text-[#F5C842]' : 'text-[#B8840C]'}">
                 ${allRowActive ? (currentLang === 'tr' ? 'Seçili' : 'Selected') : ''}
               </span>
             </div>
@@ -896,19 +874,19 @@
       const rowsHtml = sortedTours.map(({ parsed }) => {
         const isActive = String(currentFilter) === String(parsed.id);
         return `
-          <tr onclick="filterTournament('${parsed.id}')" class="cursor-pointer transition-colors group ${isActive ? 'bg-[#122921] text-white' : 'hover:bg-[#F4F1EA]/70 text-stone-800'}">
+          <tr onclick="filterTournament('${parsed.id}')" class="cursor-pointer transition-colors group ${isActive ? 'emerald-bg text-white' : 'hover:bg-[#F3EFE4]/60 text-stone-800'}">
             <td class="px-4 sm:px-6 py-3.5 text-xs sm:text-sm font-medium">
               <div class="flex items-center gap-2.5">
-                <span class="w-4 h-4 rounded-full shrink-0 flex items-center justify-center text-[10px] border transition ${isActive ? 'border-[#D4AF37] bg-[#D4AF37] text-[#122921] font-bold' : 'border-stone-300 group-hover:border-[#9E7E43] text-transparent'}">✓</span>
-                <span class="${isActive ? 'text-white font-semibold' : 'text-[#122921] group-hover:text-[#9E7E43] transition'}">${parsed.name}</span>
+                <span class="w-4 h-4 rounded-full shrink-0 flex items-center justify-center text-[10px] border transition ${isActive ? 'border-[#F5C842] bg-[#F5C842] text-[#0F3D2E] font-bold' : 'border-stone-300 group-hover:border-[#C69214] text-transparent'}">✓</span>
+                <span class="${isActive ? 'text-white font-semibold' : 'text-[#0F3D2E] group-hover:text-[#B8840C] transition'}">${parsed.name}</span>
               </div>
             </td>
             <td class="px-4 sm:px-6 py-3.5 text-xs sm:text-sm whitespace-nowrap">
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium ${isActive ? 'bg-white/10 text-[#D4AF37] border border-[#D4AF37]/30' : 'bg-stone-100 text-stone-700 border border-stone-200/80'}">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium ${isActive ? 'bg-[#F5C842]/15 text-[#FDE68A] border border-[#F5C842]/40' : 'bg-[#FFFBEB] text-[#0F3D2E] border border-[#C69214]/35'}">
                 ${parsed.location}
               </span>
             </td>
-            <td class="px-4 sm:px-6 py-3.5 text-xs sm:text-sm whitespace-nowrap font-medium ${isActive ? 'text-[#D4AF37]' : 'text-stone-600'}">
+            <td class="px-4 sm:px-6 py-3.5 text-xs sm:text-sm whitespace-nowrap font-semibold ${isActive ? 'text-[#F5C842]' : 'text-[#9A6E05]'}">
               ${parsed.date}
             </td>
           </tr>
@@ -919,13 +897,13 @@
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse">
             <thead>
-              <tr class="bg-[#F4F1EA] border-b border-stone-200 text-[11px] uppercase tracking-[0.14em] text-stone-500 font-semibold">
+              <tr class="bg-[#F3EFE4] border-b border-[#C69214]/25 text-[11px] uppercase tracking-[0.14em] text-[#0F3D2E] font-bold">
                 <th class="px-4 sm:px-6 py-3.5">${tDict.colTourName}</th>
                 <th class="px-4 sm:px-6 py-3.5">${tDict.colTourPlace}</th>
                 <th class="px-4 sm:px-6 py-3.5">${tDict.colTourDate}</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-stone-200/70">
+            <tbody class="divide-y divide-[#C69214]/15">
               ${allRowHtml}
               ${rowsHtml}
             </tbody>
@@ -936,10 +914,10 @@
       const chkContainer = document.getElementById('edit-tournament-checkboxes');
       if (chkContainer) {
         chkContainer.innerHTML = sortedTours.map(({ parsed }) => {
-          return `<label class="flex items-start gap-2 p-2.5 rounded-lg border border-stone-200 bg-white cursor-pointer hover:border-[#9E7E43]/60 transition">
-            <input type="checkbox" data-tid="${parsed.id}" class="tour-chk accent-[#122921] mt-0.5">
+          return `<label class="flex items-start gap-2 p-2.5 rounded-lg border border-stone-200 bg-white cursor-pointer hover:border-[#C69214] transition">
+            <input type="checkbox" data-tid="${parsed.id}" class="tour-chk accent-[#14533E] mt-0.5">
             <span class="leading-snug">
-              <span class="font-medium text-[#122921] block">${parsed.name}</span>
+              <span class="font-medium text-[#0F3D2E] block">${parsed.name}</span>
               <span class="text-[11px] text-stone-500">${parsed.location} • ${parsed.date}</span>
             </span>
           </label>`;
@@ -1000,11 +978,11 @@
 
       if (filtered.length === 0) {
         grid.innerHTML = `
-          <div class="col-span-full bg-white rounded-2xl border border-stone-200 p-10 text-center space-y-3">
-            <p class="font-serif-luxury text-2xl text-[#122921]">
+          <div class="col-span-full bg-white rounded-2xl border gold-border p-10 text-center space-y-3">
+            <p class="font-serif-luxury text-2xl text-[#0F3D2E]">
               ${currentLang === 'tr' ? 'Bu turnuva için henüz müsaitlik işaretleyen profesyonel bulunmuyor.' : 'No professionals have marked availability for this tournament yet.'}
             </p>
-            <button onclick="filterTournament('all')" class="text-xs font-semibold px-4 py-2 rounded-full emerald-bg text-white hover:opacity-95 transition">
+            <button onclick="filterTournament('all')" class="text-xs font-semibold px-4 py-2 rounded-full emerald-bg text-[#FDE68A] hover:opacity-95 transition">
               ${currentLang === 'tr' ? 'Tüm Kadroyu Göster' : 'Show Full Roster'}
             </button>
           </div>
@@ -1023,31 +1001,31 @@
         const tTags = sortedTours.map(({ parsed }) => {
           const isAvail = avail[parsed.id];
           const shortLabel = `${parsed.date !== '—' ? parsed.date + ' • ' : ''}${parsed.name}`;
-          return `<span class="px-2 py-0.5 rounded text-[11px] font-medium ${isAvail ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-stone-100 text-stone-400 line-through'}">${shortLabel}</span>`;
+          return `<span class="px-2 py-0.5 rounded text-[11px] font-medium ${isAvail ? 'bg-emerald-50 text-[#0F3D2E] border border-[#14533E]/30' : 'bg-stone-100 text-stone-400 line-through'}">${shortLabel}</span>`;
         }).join('');
 
         const card = document.createElement('div');
-        card.className = 'bg-white rounded-2xl border border-stone-200/90 hover:border-[#9E7E43]/60 shadow-sm hover:shadow-md transition p-6 flex flex-col justify-between';
+        card.className = 'bg-white rounded-2xl border border-[#C69214]/25 hover:border-[#D4A017] shadow-sm hover:shadow-md transition p-6 flex flex-col justify-between';
         card.innerHTML = `
           <div>
             <div class="flex items-start justify-between gap-4 mb-4">
               <div class="flex items-center gap-3.5">
                 ${renderAvatarHTML(player, 'w-14 h-14', 'text-lg')}
                 <div>
-                  <h3 onclick="openProfileModal('${player.id}')" class="font-serif-luxury text-2xl font-semibold text-[#122921] hover:text-[#9E7E43] cursor-pointer transition leading-snug">${name}</h3>
+                  <h3 onclick="openProfileModal('${player.id}')" class="font-serif-luxury text-2xl font-semibold text-[#0F3D2E] hover:text-[#C69214] cursor-pointer transition leading-snug">${name}</h3>
                   <p class="text-xs text-stone-500">${formatTurkishTitleCase(player.city) || 'Türkiye'} ${player.bbo ? `• BBO: <span class="font-medium text-stone-700">${player.bbo}</span>` : ''}</p>
                 </div>
               </div>
             </div>
-            <p class="text-xs font-semibold gold-text uppercase tracking-wider mb-2">${title}</p>
+            <p class="text-xs font-bold text-[#B8840C] uppercase tracking-wider mb-2">${title}</p>
             <p class="text-sm text-stone-600 line-clamp-2 mb-4 leading-relaxed">${bio}</p>
             <div class="mb-4">
-              <p class="text-[11px] text-stone-400 uppercase tracking-wider mb-1.5">${currentLang === 'tr' ? 'Sistem' : 'System'}: <span class="text-stone-700 font-medium">${player.system || '2/1 GF'}</span></p>
+              <p class="text-[11px] text-stone-400 uppercase tracking-wider mb-1.5">${currentLang === 'tr' ? 'Sistem' : 'System'}: <span class="text-[#0F3D2E] font-semibold">${player.system || '2/1 GF'}</span></p>
               <div class="flex flex-wrap gap-1.5 mt-2">${tTags}</div>
             </div>
           </div>
           <div class="pt-4 border-t border-stone-100 flex items-center justify-between gap-3">
-            <button onclick="openProfileModal('${player.id}')" class="group inline-flex items-center gap-1.5 py-2 px-3.5 rounded-lg bg-[#F4F1EA] border border-[#9E7E43]/40 text-[#122921] text-xs font-semibold tracking-wide hover:bg-[#122921] hover:text-[#D4AF37] hover:border-[#122921] transition-all duration-200 shadow-sm">
+            <button onclick="openProfileModal('${player.id}')" class="group inline-flex items-center gap-1.5 py-2 px-3.5 rounded-lg bg-[#FFFBEB] border border-[#C69214]/50 text-[#0F3D2E] text-xs font-semibold tracking-wide hover:emerald-bg hover:text-[#F5C842] hover:border-[#14533E] transition-all duration-200 shadow-2xs">
               <span>${i18n[currentLang].btnProfile}</span>
               <span class="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
             </button>
@@ -1079,7 +1057,7 @@
             <p class="text-stone-800 font-medium">${parsed.name}</p>
             <p class="text-[11px] text-stone-500">${parsed.location} • ${parsed.date}</p>
           </div>
-          <span class="font-medium shrink-0 ${isAvail ? 'text-emerald-700' : 'text-stone-400'}">${isAvail ? (currentLang === 'tr' ? '✓ Müsait' : '✓ Available') : (currentLang === 'tr' ? 'Müsait Değil' : 'Not Available')}</span>
+          <span class="font-semibold shrink-0 ${isAvail ? 'text-[#14533E]' : 'text-stone-400'}">${isAvail ? (currentLang === 'tr' ? '✓ Müsait' : '✓ Available') : (currentLang === 'tr' ? 'Müsait Değil' : 'Not Available')}</span>
         </div>`;
       }).join('');
 
@@ -1089,8 +1067,8 @@
         <div class="flex flex-col sm:flex-row items-center gap-5 mb-6 text-center sm:text-left">
           ${renderAvatarHTML(player, 'w-20 h-20', 'text-2xl')}
           <div>
-            <h2 class="font-serif-luxury text-3xl font-semibold text-[#122921]">${name}</h2>
-            <p class="text-xs gold-text font-semibold uppercase tracking-wider mt-1">${title}</p>
+            <h2 class="font-serif-luxury text-3xl font-semibold text-[#0F3D2E]">${name}</h2>
+            <p class="text-xs text-[#B8840C] font-bold uppercase tracking-wider mt-1">${title}</p>
             <p class="text-xs text-stone-500 mt-1">${formatTurkishTitleCase(player.city) || 'Türkiye'} ${player.bbo ? `• BBO: <span class="font-medium text-stone-700">${player.bbo}</span>` : ''}</p>
           </div>
         </div>
@@ -1249,12 +1227,12 @@
       if (tab === 'login') {
         loginForm.classList.remove('hidden');
         signupForm.classList.add('hidden');
-        tabLogin.className = 'text-sm font-semibold text-[#122921] border-b-2 border-[#122921] pb-1';
+        tabLogin.className = 'text-sm font-semibold text-[#0F3D2E] border-b-2 border-[#14533E] pb-1';
         tabSignup.className = 'text-sm font-medium text-stone-500 pb-1';
       } else {
         loginForm.classList.add('hidden');
         signupForm.classList.remove('hidden');
-        tabSignup.className = 'text-sm font-semibold text-[#122921] border-b-2 border-[#122921] pb-1';
+        tabSignup.className = 'text-sm font-semibold text-[#0F3D2E] border-b-2 border-[#14533E] pb-1';
         tabLogin.className = 'text-sm font-medium text-stone-500 pb-1';
       }
     }
@@ -1536,13 +1514,13 @@
       const area = document.getElementById('auth-nav-area');
       if (currentUser) {
         area.innerHTML = `
-          <button onclick="openAuthModal()" class="text-xs sm:text-sm font-medium px-4 py-2 rounded-full emerald-bg text-white hover:opacity-95 transition flex items-center gap-2">
-            <span>♠</span> <span data-i18n="navMyPanel">${i18n[currentLang].navMyPanel}</span>
+          <button onclick="openAuthModal()" class="text-xs sm:text-sm font-medium px-4 py-2 rounded-full emerald-bg text-[#FDE68A] hover:opacity-95 transition flex items-center gap-2 shadow-2xs">
+            <span class="text-[#F5C842]">♠</span> <span data-i18n="navMyPanel">${i18n[currentLang].navMyPanel}</span>
           </button>
         `;
       } else {
         area.innerHTML = `
-          <button onclick="openAuthModal()" class="text-xs sm:text-sm font-medium px-4 py-2 rounded-full border border-[#122921] text-[#122921] hover:bg-[#122921] hover:text-white transition" data-i18n="navJoin">
+          <button onclick="openAuthModal()" class="text-xs sm:text-sm font-semibold px-4 py-2 rounded-full border border-[#14533E] text-[#0F3D2E] hover:emerald-bg hover:text-[#FDE68A] transition shadow-2xs" data-i18n="navJoin">
             ${i18n[currentLang].navJoin}
           </button>
         `;
@@ -1625,12 +1603,12 @@
         return `
           <div class="p-3.5 sm:px-5 flex items-center justify-between gap-4 hover:bg-white transition">
             <div class="min-w-0">
-              <p class="text-sm font-semibold text-[#122921] truncate">${idx + 1}. ${proName}</p>
+              <p class="text-sm font-semibold text-[#0F3D2E] truncate">${idx + 1}. ${proName}</p>
               <p class="text-xs text-stone-500">${phone ? `+${phone}` : 'WhatsApp numarası kayıtlı değil'}</p>
             </div>
             ${
               waUrl
-                ? `<a href="${waUrl}" target="_blank" rel="noopener noreferrer" onclick="this.classList.remove('bg-[#25D366]','hover:bg-[#20ba5a]');this.classList.add('bg-stone-600','hover:bg-stone-700');this.textContent='✓ Açıldı';" class="shrink-0 px-4 py-2 rounded-lg bg-[#25D366] hover:bg-[#20ba5a] text-white text-xs font-medium transition shadow-sm">WhatsApp Aç</a>`
+                ? `<a href="${waUrl}" target="_blank" rel="noopener noreferrer" onclick="this.classList.remove('bg-[#16A34A]','hover:bg-[#15803D]');this.classList.add('bg-stone-600','hover:bg-stone-700');this.textContent='✓ Açıldı';" class="shrink-0 px-4 py-2 rounded-lg bg-[#16A34A] hover:bg-[#15803D] text-white text-xs font-medium transition shadow-2xs">WhatsApp Aç</a>`
                 : `<span class="shrink-0 text-xs text-stone-400">Numara yok</span>`
             }
           </div>
@@ -1685,18 +1663,18 @@
         const msg = buildApprovalMessage(proName);
         const waUrl = phone ? `https://wa.me/${phone}?text=${encodeURIComponent(msg)}` : '';
         const statusBadge = p.is_approved
-          ? `<span class="ml-1.5 text-[11px] font-normal px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">Onaylı</span>`
-          : `<span class="ml-1.5 text-[11px] font-normal px-2 py-0.5 rounded bg-amber-100 text-amber-800">Onay Bekliyor</span>`;
+          ? `<span class="ml-1.5 text-[11px] font-normal px-2 py-0.5 rounded bg-emerald-100 text-[#0F3D2E]">Onaylı</span>`
+          : `<span class="ml-1.5 text-[11px] font-normal px-2 py-0.5 rounded bg-amber-100 text-amber-900">Onay Bekliyor</span>`;
 
         return `
           <div class="p-3.5 sm:px-5 flex items-center justify-between gap-4 hover:bg-white transition">
             <div class="min-w-0">
-              <p class="text-sm font-semibold text-[#122921] truncate">${idx + 1}. ${proName} ${statusBadge}</p>
+              <p class="text-sm font-semibold text-[#0F3D2E] truncate">${idx + 1}. ${proName} ${statusBadge}</p>
               <p class="text-xs text-stone-500">${phone ? `+${phone}` : 'WhatsApp numarası kayıtlı değil'}</p>
             </div>
             ${
               waUrl
-                ? `<a href="${waUrl}" target="_blank" rel="noopener noreferrer" onclick="this.classList.remove('bg-[#25D366]','hover:bg-[#20ba5a]');this.classList.add('bg-stone-600','hover:bg-stone-700');this.textContent='✓ Açıldı';" class="shrink-0 px-4 py-2 rounded-lg bg-[#25D366] hover:bg-[#20ba5a] text-white text-xs font-medium transition shadow-sm">WhatsApp Aç</a>`
+                ? `<a href="${waUrl}" target="_blank" rel="noopener noreferrer" onclick="this.classList.remove('bg-[#16A34A]','hover:bg-[#15803D]');this.classList.add('bg-stone-600','hover:bg-stone-700');this.textContent='✓ Açıldı';" class="shrink-0 px-4 py-2 rounded-lg bg-[#16A34A] hover:bg-[#15803D] text-white text-xs font-medium transition shadow-2xs">WhatsApp Aç</a>`
                 : `<span class="shrink-0 text-xs text-stone-400">Numara yok</span>`
             }
           </div>
