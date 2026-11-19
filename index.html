@@ -135,12 +135,9 @@
           </button>
         </div>
 
-        <!-- 3 Sütunlu Klas Turnuva Tablosu + Alt Etap Filtre Çubuğu -->
+        <!-- 3 Sütunlu Klas Turnuva Tablosu -->
         <div id="tournament-filters" class="bg-white rounded-2xl border gold-border shadow-sm overflow-hidden">
           <!-- JS ile 3 sütunlu tablo olarak render edilecek -->
-        </div>
-        <div id="sub-event-bar" class="hidden bg-[#FFFBEB] rounded-2xl border border-[#C69214]/50 p-4 shadow-2xs">
-          <!-- Çok etaplı turnuvaya tıklanınca alt seçenekler burada açılır -->
         </div>
 
         <div class="pt-4 flex flex-col items-center text-center gap-3">
@@ -479,15 +476,6 @@
             <label class="block text-xs font-medium text-stone-700 mb-1">Önemli Başarılar (Her satıra bir derece)</label>
             <textarea id="reg-ach" rows="2" placeholder="Avrupa Şampiyonası Gümüş Madalya&#10;Türkiye Şampiyonluğu" class="w-full px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm"></textarea>
           </div>
-
-          <!-- Kayıt Sırasında Müsaitlik Seçimi -->
-          <div class="pt-1">
-            <label class="block text-xs font-semibold text-[#0F3D2E] mb-2">Turnuva Müsaitlik Durumunuz:</label>
-            <div id="reg-tournament-checkboxes" class="space-y-3 text-xs">
-              <!-- JS ile doldurulacak -->
-            </div>
-          </div>
-
           <button type="submit" id="btn-signup-submit" class="w-full py-3 rounded-lg emerald-bg text-white text-sm font-medium hover:opacity-95 transition">Kaydı Tamamla ve Onaya Gönder</button>
         </form>
         <p id="auth-error" class="mt-3 text-xs text-red-600 hidden"></p>
@@ -557,7 +545,7 @@
 
           <div class="pt-2">
             <label class="block text-xs font-semibold text-[#0F3D2E] mb-2">Turnuva Müsaitlik Durumunuz:</label>
-            <div id="edit-tournament-checkboxes" class="space-y-3 text-xs">
+            <div id="edit-tournament-checkboxes" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
               <!-- Dinamik doldurulacak -->
             </div>
           </div>
@@ -597,7 +585,6 @@
     let currentLang = 'tr';
     let currentSection = 'home';
     let currentFilter = 'all';
-    let currentSubEventFilter = 'all';
     let playerSearchQuery = '';
     let allPlayers = [];
     let allTournaments = [];
@@ -605,57 +592,6 @@
     let currentUser = null;
     let currentUserProfile = null;
     let isPasswordRecoveryMode = false;
-
-    /* --- ÇOK ETAPı / FESTİVAL ALT PROGRAMLARI --- */
-    const FESTIVAL_SUBEVENTS_BY_KEY = {
-      prag_winter_open: [
-        { id: 'acik_takimlar', name_tr: 'Açık Takımlar', name_en: 'Open Teams', date_tr: '11–18 Şubat', date_en: '11–18 Feb' },
-        { id: 'acik_ikili', name_tr: 'Açık İkili', name_en: 'Open Pairs', date_tr: '14–18 Şubat', date_en: '14–18 Feb' },
-        { id: 'mix_takimlar', name_tr: 'Mix Takımlar', name_en: 'Mix Teams', date_tr: '19–25 Şubat', date_en: '19–25 Feb' },
-        { id: 'mix_ikili', name_tr: 'Mix İkili', name_en: 'Mix Pairs', date_tr: '21–25 Şubat', date_en: '21–25 Feb' }
-      ],
-      turkey_summer_open: [
-        { id: 'mix_takimlar', name_tr: 'Mix Takımlar', name_en: 'Mix Teams', date_tr: '1–4 Mayıs', date_en: '1–4 May' },
-        { id: 'mix_ikili', name_tr: 'Mix İkili', name_en: 'Mix Pairs', date_tr: '3–4 Mayıs', date_en: '3–4 May' },
-        { id: 'acik_takimlar', name_tr: 'Açık Takımlar', name_en: 'Open Teams', date_tr: '5–8 Mayıs', date_en: '5–8 May' },
-        { id: 'kadin_takimlar', name_tr: 'Kadın Takımlar', name_en: 'Women Teams', date_tr: '5–7 Mayıs', date_en: '5–7 May' },
-        { id: 'acik_ikili', name_tr: 'Açık İkili', name_en: 'Open Pairs', date_tr: '8–10 Mayıs', date_en: '8–10 May' }
-      ]
-    };
-
-    function detectFestivalKey(t) {
-      const combined = `${t.id || ''} ${t.name_tr || ''} ${t.name_en || ''} ${t.location_tr || ''} ${t.location_en || ''}`.toLocaleLowerCase('tr-TR');
-      if (combined.includes('prag') || (combined.includes('kış') && combined.includes('açık')) || combined.includes('winter open')) {
-        return 'prag_winter_open';
-      }
-      if ((combined.includes('yaz') && combined.includes('açık')) || combined.includes('summer open') || combined.includes('yaz açık')) {
-        return 'turkey_summer_open';
-      }
-      return null;
-    }
-
-    function getSubEventsForTournament(t) {
-      const festKey = detectFestivalKey(t);
-      return festKey ? FESTIVAL_SUBEVENTS_BY_KEY[festKey] : [];
-    }
-
-    function makeAvailKey(tourId, subId = null) {
-      return subId ? `${tourId}__${subId}` : String(tourId);
-    }
-
-    function isPlayerAvailableFor(player, tourId, subId = 'all') {
-      const avail = player.availability || {};
-      const tourObj = allTournaments.find(t => String(t.id) === String(tourId));
-      const subEvents = tourObj ? getSubEventsForTournament(tourObj) : [];
-
-      if (subEvents.length > 0) {
-        if (subId && subId !== 'all') {
-          return avail[makeAvailKey(tourId, subId)] === true;
-        }
-        return subEvents.some(se => avail[makeAvailKey(tourId, se.id)] === true) || avail[String(tourId)] === true;
-      }
-      return avail[String(tourId)] === true;
-    }
 
     function togglePlayerSearch() {
       const box = document.getElementById('player-search-box');
@@ -725,7 +661,6 @@
 
     function selectTournamentFromCalendarTab(tourId) {
       currentFilter = tourId;
-      currentSubEventFilter = 'all';
       switchSection('home');
       renderTournamentsUI();
       renderPlayers();
@@ -738,13 +673,10 @@
       const tDict = i18n[currentLang];
 
       const rowsHtml = sortedTours.map(({ parsed }) => {
-        const availCount = allPlayers.filter(p => isPlayerAvailableFor(p, parsed.id, 'all')).length;
+        const availCount = allPlayers.filter(p => p.availability && p.availability[parsed.id] === true).length;
         return `
           <tr onclick="selectTournamentFromCalendarTab('${parsed.id}')" class="cursor-pointer hover:bg-[#F3EFE4]/70 transition-colors">
-            <td class="px-4 sm:px-6 py-4 text-xs sm:text-sm font-semibold text-[#0F3D2E]">
-              ${parsed.name}
-              ${parsed.subEvents.length > 0 ? `<span class="ml-2 text-[11px] font-medium text-[#8F6400]">(${parsed.subEvents.length} ${currentLang === 'tr' ? 'etap' : 'events'})</span>` : ''}
-            </td>
+            <td class="px-4 sm:px-6 py-4 text-xs sm:text-sm font-semibold text-[#0F3D2E]">${parsed.name}</td>
             <td class="px-4 sm:px-6 py-4 text-xs sm:text-sm whitespace-nowrap">
               <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#FFFBEB] text-[#0F3D2E] border border-[#C69214]/35">
                 ${parsed.location}
@@ -848,7 +780,7 @@
       if (explicitYearMatch) {
         year = parseInt(explicitYearMatch[1], 10);
       } else {
-        year = (month === 11 || month === 12) ? 2026 : 2027;
+        year = month === 12 ? 2026 : 2027;
       }
       return year * 10000 + month * 100 + day;
     }
@@ -885,7 +817,6 @@
       datePart = datePart || '—';
 
       const chronoScore = computeChronoScore(datePart, t.display_order || 999);
-      const subEvents = getSubEventsForTournament(t);
 
       return {
         id: t.id,
@@ -893,7 +824,6 @@
         location,
         date: datePart,
         chronoScore,
-        subEvents,
         raw: rawName
       };
     }
@@ -902,40 +832,6 @@
       return [...allTournaments]
         .map(t => ({ rawObj: t, parsed: parseTournamentDetails(t, lang) }))
         .sort((a, b) => a.parsed.chronoScore - b.parsed.chronoScore);
-    }
-
-    function ensureFestivalTournamentsPresent(list) {
-      const arr = Array.isArray(list) ? [...list] : [];
-      const hasPrag = arr.some(t => detectFestivalKey(t) === 'prag_winter_open');
-      const hasSummer = arr.some(t => detectFestivalKey(t) === 'turkey_summer_open');
-
-      if (!hasPrag) {
-        arr.push({
-          id: 'prag_winter_open',
-          name_tr: 'Avrupa Kış Açık Şampiyonası',
-          name_en: 'European Winter Open Championships',
-          location_tr: 'Prag',
-          location_en: 'Prague',
-          date_tr: '11–25 Şubat',
-          date_en: '11–25 Feb',
-          display_order: 20
-        });
-      }
-
-      if (!hasSummer) {
-        arr.push({
-          id: 'turkey_summer_open',
-          name_tr: 'Türkiye Yaz Açık Şampiyonası',
-          name_en: 'Turkey Summer Open Championships',
-          location_tr: 'Türkiye',
-          location_en: 'Turkey',
-          date_tr: '1–10 Mayıs',
-          date_en: '1–10 May',
-          display_order: 30
-        });
-      }
-
-      return arr;
     }
 
     async function sendAdminSignupNotification(details) {
@@ -965,25 +861,7 @@
 
     const fallbackTournaments = [
       { id: 't1', name_tr: 'İnönü İkili Turnuvası', location_tr: 'Ankara', date_tr: '5–6 Aralık', name_en: 'Dec Inonu Pairs' },
-      { id: 't2', name_tr: 'Mix Takımlar Şampiyonası', location_tr: 'İstanbul', date_tr: '9–11 Aralık', name_en: 'Dec Mix Teams' },
-      {
-        id: 'prag_winter_open',
-        name_tr: 'Avrupa Kış Açık Şampiyonası',
-        name_en: 'European Winter Open Championships',
-        location_tr: 'Prag',
-        location_en: 'Prague',
-        date_tr: '11–25 Şubat',
-        date_en: '11–25 Feb'
-      },
-      {
-        id: 'turkey_summer_open',
-        name_tr: 'Türkiye Yaz Açık Şampiyonası',
-        name_en: 'Turkey Summer Open Championships',
-        location_tr: 'Türkiye',
-        location_en: 'Turkey',
-        date_tr: '1–10 Mayıs',
-        date_en: '1–10 May'
-      }
+      { id: 't2', name_tr: 'Mix Takımlar Şampiyonası', location_tr: 'İstanbul', date_tr: '9–11 Aralık', name_en: 'Dec Mix Teams' }
     ];
 
     const fallbackPlayers = [
@@ -1004,14 +882,7 @@
         bio_en: 'Full-time bridge professional and coach since 2013.',
         achievements_tr: ['11. Avrupa Açık Takımlar Şampiyonası Gümüş Madalya'],
         achievements_en: ['11th European Open Teams Silver Medal'],
-        availability: {
-          t1: true,
-          t2: true,
-          prag_winter_open__acik_takimlar: true,
-          prag_winter_open__mix_ikili: true,
-          turkey_summer_open__mix_takimlar: true,
-          turkey_summer_open__acik_ikili: true
-        }
+        availability: { t1: true, t2: true }
       }
     ];
 
@@ -1035,7 +906,6 @@
         colTourPlace: 'Turnuva Yeri',
         colTourDate: 'Tarihi',
         allToursRowTitle: 'Tüm Turnuvalar — Tüm Profesyonel Kadroyu Göster',
-        subEventAll: 'Tümü',
         btnProfile: 'Profili İncele',
         contactLabel: 'İletişim',
         footerNote: '© 2026 ProBridge Connect. Tüm görüşmeler gizlilik esasına göre doğrudan profesyonel ve sponsor arasında yürütülür.'
@@ -1059,7 +929,6 @@
         colTourPlace: 'Location',
         colTourDate: 'Date',
         allToursRowTitle: 'All Tournaments — Show Complete Roster',
-        subEventAll: 'All',
         btnProfile: 'View Profile',
         contactLabel: 'Contact',
         footerNote: '© 2026 ProBridge Connect. All discussions are conducted privately and directly between sponsor and professional.'
@@ -1178,14 +1047,7 @@
 
     function filterTournament(tKey) {
       currentFilter = tKey;
-      currentSubEventFilter = 'all';
       renderTournamentsUI();
-      renderPlayers();
-    }
-
-    function filterSubEvent(subId) {
-      currentSubEventFilter = subId || 'all';
-      renderSubEventBar();
       renderPlayers();
     }
 
@@ -1208,12 +1070,12 @@
           .order('display_order', { ascending: true });
 
         if (!tErr && tData && tData.length > 0) {
-          allTournaments = ensureFestivalTournamentsPresent(tData);
+          allTournaments = tData;
         } else {
-          allTournaments = ensureFestivalTournamentsPresent(fallbackTournaments);
+          allTournaments = fallbackTournaments;
         }
       } catch (e) {
-        allTournaments = ensureFestivalTournamentsPresent(fallbackTournaments);
+        allTournaments = fallbackTournaments;
       }
 
       const urlParams = new URLSearchParams(window.location.search);
@@ -1225,113 +1087,6 @@
       renderTournamentsUI();
       await loadPlayers();
       await checkSession();
-    }
-
-    function renderSubEventBar() {
-      const bar = document.getElementById('sub-event-bar');
-      if (!bar) return;
-
-      const sortedTours = getSortedTournaments(currentLang);
-      const selectedItem = sortedTours.find(item => String(item.parsed.id) === String(currentFilter));
-
-      if (!selectedItem || !selectedItem.parsed.subEvents || selectedItem.parsed.subEvents.length === 0) {
-        bar.classList.add('hidden');
-        bar.innerHTML = '';
-        return;
-      }
-
-      const subEvents = selectedItem.parsed.subEvents;
-      const isAllSub = currentSubEventFilter === 'all';
-
-      const allBtn = `
-        <button type="button" onclick="filterSubEvent('all')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold transition cursor-pointer ${
-          isAllSub
-            ? 'emerald-bg text-[#FDE68A] shadow-2xs'
-            : 'bg-white text-[#0F3D2E] border border-[#C69214]/45 hover:border-[#14533E]'
-        }">
-          ${i18n[currentLang].subEventAll}
-        </button>
-      `;
-
-      const subBtns = subEvents.map(se => {
-        const label = currentLang === 'tr' ? se.name_tr : se.name_en;
-        const dateLabel = currentLang === 'tr' ? se.date_tr : se.date_en;
-        const active = currentSubEventFilter === se.id;
-        return `
-          <button type="button" onclick="filterSubEvent('${se.id}')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold transition cursor-pointer inline-flex items-center gap-1.5 ${
-            active
-              ? 'emerald-bg text-[#FDE68A] shadow-2xs'
-              : 'bg-white text-[#0F3D2E] border border-[#C69214]/45 hover:border-[#14533E]'
-          }">
-            <span>${label}</span>
-            <span class="text-[11px] font-normal ${active ? 'text-[#F5C842]' : 'text-[#8F6400]'}">(${dateLabel})</span>
-          </button>
-        `;
-      }).join('');
-
-      bar.classList.remove('hidden');
-      bar.innerHTML = `
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <p class="text-[11px] uppercase tracking-[0.14em] text-[#8F6400] font-bold">
-              ${selectedItem.parsed.name} — ${currentLang === 'tr' ? 'ETAP SEÇİMİ' : 'EVENT FILTER'}
-            </p>
-            <p class="text-xs text-stone-600 mt-0.5">
-              ${currentLang === 'tr' ? 'İstediğiniz dalı seçerek o etapta müsait oyuncuları görün.' : 'Select a specific event to filter available professionals.'}
-            </p>
-          </div>
-          <div class="flex flex-wrap items-center gap-2">
-            ${allBtn}
-            ${subBtns}
-          </div>
-        </div>
-      `;
-    }
-
-    function buildAvailabilityCheckboxesHTML(prefixClass, selectedMap = {}) {
-      const sortedTours = getSortedTournaments(currentLang);
-      return sortedTours.map(({ parsed }) => {
-        if (parsed.subEvents && parsed.subEvents.length > 0) {
-          const itemsHtml = parsed.subEvents.map(se => {
-            const key = makeAvailKey(parsed.id, se.id);
-            const checked = !!selectedMap[key];
-            const seName = currentLang === 'tr' ? se.name_tr : se.name_en;
-            const seDate = currentLang === 'tr' ? se.date_tr : se.date_en;
-            return `
-              <label class="flex items-start gap-2 p-2 rounded-lg border border-stone-200 bg-[#FBF9F4] cursor-pointer hover:border-[#C69214] transition">
-                <input type="checkbox" data-avail-key="${key}" ${checked ? 'checked' : ''} class="${prefixClass} accent-[#14533E] mt-0.5">
-                <span class="leading-snug">
-                  <span class="font-medium text-[#0F3D2E] block">${seName}</span>
-                  <span class="text-[11px] text-[#8F6400] font-medium">${seDate}</span>
-                </span>
-              </label>
-            `;
-          }).join('');
-
-          return `
-            <div class="p-3 rounded-xl border border-[#C69214]/45 bg-white space-y-2">
-              <div class="flex items-center justify-between gap-2 border-b border-stone-100 pb-1.5">
-                <span class="font-semibold text-[#0F3D2E]">${parsed.name}</span>
-                <span class="text-[11px] text-stone-500">${parsed.location} • ${parsed.date}</span>
-              </div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                ${itemsHtml}
-              </div>
-            </div>
-          `;
-        }
-
-        const checked = !!selectedMap[parsed.id];
-        return `
-          <label class="flex items-start gap-2.5 p-2.5 rounded-xl border border-stone-200 bg-white cursor-pointer hover:border-[#C69214] transition">
-            <input type="checkbox" data-avail-key="${parsed.id}" ${checked ? 'checked' : ''} class="${prefixClass} accent-[#14533E] mt-0.5">
-            <span class="leading-snug">
-              <span class="font-semibold text-[#0F3D2E] block">${parsed.name}</span>
-              <span class="text-[11px] text-stone-500">${parsed.location} • ${parsed.date}</span>
-            </span>
-          </label>
-        `;
-      }).join('');
     }
 
     function renderTournamentsUI() {
@@ -1364,14 +1119,12 @@
 
       const rowsHtml = sortedTours.map(({ parsed }) => {
         const isActive = String(currentFilter) === String(parsed.id);
-        const hasSub = parsed.subEvents && parsed.subEvents.length > 0;
         return `
           <tr onclick="filterTournament('${parsed.id}')" class="cursor-pointer transition-colors group ${isActive ? 'emerald-bg text-white' : 'hover:bg-[#F3EFE4]/60 text-stone-800'}">
             <td class="px-4 sm:px-6 py-3.5 text-xs sm:text-sm font-medium">
-              <div class="flex items-center gap-2.5 flex-wrap">
+              <div class="flex items-center gap-2.5">
                 <span class="w-4 h-4 rounded-full shrink-0 flex items-center justify-center text-[10px] border transition ${isActive ? 'border-[#F5C842] bg-[#F5C842] text-[#0F3D2E] font-bold' : 'border-stone-300 group-hover:border-[#C69214] text-transparent'}">✓</span>
                 <span class="${isActive ? 'text-white font-semibold' : 'text-[#0F3D2E] group-hover:text-[#8F6400] transition'}">${parsed.name}</span>
-                ${hasSub ? `<span class="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${isActive ? 'bg-[#F5C842]/20 text-[#FDE68A] border border-[#F5C842]/40' : 'bg-[#FFFBEB] text-[#8F6400] border border-[#C69214]/40'}">${parsed.subEvents.length} ${currentLang === 'tr' ? 'Etap' : 'Events'}</span>` : ''}
               </div>
             </td>
             <td class="px-4 sm:px-6 py-3.5 text-xs sm:text-sm whitespace-nowrap">
@@ -1404,21 +1157,17 @@
         </div>
       `;
 
-      renderSubEventBar();
-
-      const regChkContainer = document.getElementById('reg-tournament-checkboxes');
-      if (regChkContainer) {
-        const currentRegMap = {};
-        document.querySelectorAll('.reg-tour-chk:checked').forEach(c => {
-          currentRegMap[c.getAttribute('data-avail-key')] = true;
-        });
-        regChkContainer.innerHTML = buildAvailabilityCheckboxesHTML('reg-tour-chk', currentRegMap);
-      }
-
       const chkContainer = document.getElementById('edit-tournament-checkboxes');
       if (chkContainer) {
-        const currentEditMap = currentUserProfile?.availability || {};
-        chkContainer.innerHTML = buildAvailabilityCheckboxesHTML('tour-chk', currentEditMap);
+        chkContainer.innerHTML = sortedTours.map(({ parsed }) => {
+          return `<label class="flex items-start gap-2 p-2.5 rounded-lg border border-stone-200 bg-white cursor-pointer hover:border-[#C69214] transition">
+            <input type="checkbox" data-tid="${parsed.id}" class="tour-chk accent-[#14533E] mt-0.5">
+            <span class="leading-snug">
+              <span class="font-medium text-[#0F3D2E] block">${parsed.name}</span>
+              <span class="text-[11px] text-stone-500">${parsed.location} • ${parsed.date}</span>
+            </span>
+          </label>`;
+        }).join('');
       }
 
       if (currentUserProfile) {
@@ -1460,7 +1209,7 @@
 
       const sortedTours = getSortedTournaments(currentLang);
       const filtered = allPlayers.filter(p => {
-        const matchesTour = currentFilter === 'all' || isPlayerAvailableFor(p, currentFilter, currentSubEventFilter);
+        const matchesTour = currentFilter === 'all' || (p.availability && p.availability[currentFilter] === true);
         if (!matchesTour) return false;
 
         if (!playerSearchQuery) return true;
@@ -1477,15 +1226,7 @@
             : `Showing all ${filtered.length} approved professionals`;
         } else {
           const selTour = sortedTours.find(item => String(item.parsed.id) === String(currentFilter));
-          let selName = selTour ? `${selTour.parsed.name} (${selTour.parsed.date})` : '';
-          if (selTour && currentSubEventFilter !== 'all') {
-            const subObj = selTour.parsed.subEvents.find(s => s.id === currentSubEventFilter);
-            if (subObj) {
-              const subName = currentLang === 'tr' ? subObj.name_tr : subObj.name_en;
-              const subDate = currentLang === 'tr' ? subObj.date_tr : subObj.date_en;
-              selName = `${selTour.parsed.name} — ${subName} (${subDate})`;
-            }
-          }
+          const selName = selTour ? `${selTour.parsed.name} (${selTour.parsed.date})` : '';
           captionEl.textContent = currentLang === 'tr'
             ? `${selName} için ${filtered.length} müsait profesyonel listeleniyor`
             : `Showing ${filtered.length} available professionals for ${selName}`;
@@ -1515,17 +1256,7 @@
         const avail = player.availability || {};
 
         const tTags = sortedTours.map(({ parsed }) => {
-          if (parsed.subEvents && parsed.subEvents.length > 0) {
-            return parsed.subEvents.map(se => {
-              const key = makeAvailKey(parsed.id, se.id);
-              const isAvail = avail[key] === true;
-              const seName = currentLang === 'tr' ? se.name_tr : se.name_en;
-              const seDate = currentLang === 'tr' ? se.date_tr : se.date_en;
-              return `<span class="px-2 py-0.5 rounded text-[11px] font-medium ${isAvail ? 'bg-emerald-50 text-[#0F3D2E] border border-[#14533E]/30' : 'bg-stone-100 text-stone-400 line-through'}">${parsed.name}: ${seName} (${seDate})</span>`;
-            }).join('');
-          }
-
-          const isAvail = avail[parsed.id] === true;
+          const isAvail = avail[parsed.id];
           const shortLabel = `${parsed.date !== '—' ? parsed.date + ' • ' : ''}${parsed.name}`;
           return `<span class="px-2 py-0.5 rounded text-[11px] font-medium ${isAvail ? 'bg-emerald-50 text-[#0F3D2E] border border-[#14533E]/30' : 'bg-stone-100 text-stone-400 line-through'}">${shortLabel}</span>`;
         }).join('');
@@ -1577,24 +1308,7 @@
       const sortedTours = getSortedTournaments(currentLang);
 
       const tListHtml = sortedTours.map(({ parsed }) => {
-        if (parsed.subEvents && parsed.subEvents.length > 0) {
-          const rows = parsed.subEvents.map(se => {
-            const key = makeAvailKey(parsed.id, se.id);
-            const isAvail = avail[key] === true;
-            const seName = currentLang === 'tr' ? se.name_tr : se.name_en;
-            const seDate = currentLang === 'tr' ? se.date_tr : se.date_en;
-            return `<div class="flex items-center justify-between gap-3 p-2.5 rounded-lg border border-stone-200 bg-white text-xs">
-              <div>
-                <p class="text-stone-800 font-medium">${parsed.name} — ${seName}</p>
-                <p class="text-[11px] text-stone-500">${parsed.location} • ${seDate}</p>
-              </div>
-              <span class="font-semibold shrink-0 ${isAvail ? 'text-[#14533E]' : 'text-stone-400'}">${isAvail ? (currentLang === 'tr' ? '✓ Müsait' : '✓ Available') : (currentLang === 'tr' ? 'Müsait Değil' : 'Not Available')}</span>
-            </div>`;
-          }).join('');
-          return rows;
-        }
-
-        const isAvail = avail[parsed.id] === true;
+        const isAvail = avail[parsed.id];
         return `<div class="flex items-center justify-between gap-3 p-2.5 rounded-lg border border-stone-200 bg-white text-xs">
           <div>
             <p class="text-stone-800 font-medium">${parsed.name}</p>
@@ -1671,14 +1385,9 @@
       if (currentUser) {
         document.getElementById('auth-forms-container').classList.add('hidden');
         document.getElementById('dashboard-container').classList.remove('hidden');
-        populateDashboard();
       } else {
         document.getElementById('auth-forms-container').classList.remove('hidden');
         document.getElementById('dashboard-container').classList.add('hidden');
-        const regChkContainer = document.getElementById('reg-tournament-checkboxes');
-        if (regChkContainer && !regChkContainer.innerHTML.trim()) {
-          regChkContainer.innerHTML = buildAvailabilityCheckboxesHTML('reg-tour-chk', {});
-        }
       }
     }
 
@@ -1782,10 +1491,6 @@
         signupForm.classList.remove('hidden');
         tabSignup.className = 'text-sm font-semibold text-[#0F3D2E] border-b-2 border-[#14533E] pb-1';
         tabLogin.className = 'text-sm font-medium text-stone-500 pb-1';
-        const regChkContainer = document.getElementById('reg-tournament-checkboxes');
-        if (regChkContainer) {
-          regChkContainer.innerHTML = buildAvailabilityCheckboxesHTML('reg-tour-chk', {});
-        }
       }
     }
 
@@ -1837,14 +1542,6 @@
       const achs = achRaw ? achRaw.split('\n').map(s => s.trim()).filter(Boolean) : [];
       const photoFile = document.getElementById('reg-photo').files[0];
 
-      const availability = {};
-      document.querySelectorAll('.reg-tour-chk').forEach(chk => {
-        const key = chk.getAttribute('data-avail-key');
-        if (key && chk.checked) {
-          availability[key] = true;
-        }
-      });
-
       const { data, error } = await supabaseClient.auth.signUp({ email, password });
       if (error) {
         err.textContent = 'Kayıt hatası: ' + error.message;
@@ -1880,7 +1577,7 @@
           achievements_en: achs,
           avatar_url: avatarUrl,
           is_approved: false,
-          availability
+          availability: {}
         });
 
         if (profileErr) {
@@ -1978,10 +1675,10 @@
       }
 
       const avail = currentUserProfile.availability || {};
-      const chkContainer = document.getElementById('edit-tournament-checkboxes');
-      if (chkContainer) {
-        chkContainer.innerHTML = buildAvailabilityCheckboxesHTML('tour-chk', avail);
-      }
+      document.querySelectorAll('.tour-chk').forEach(chk => {
+        const tid = chk.getAttribute('data-tid');
+        chk.checked = !!avail[tid];
+      });
     }
 
     async function saveProfileUpdates(e) {
@@ -2013,10 +1710,8 @@
 
       const availability = {};
       document.querySelectorAll('.tour-chk').forEach(chk => {
-        const key = chk.getAttribute('data-avail-key');
-        if (key && chk.checked) {
-          availability[key] = true;
-        }
+        const tid = chk.getAttribute('data-tid');
+        availability[tid] = chk.checked;
       });
 
       const { error } = await supabaseClient.from('profiles').update({
