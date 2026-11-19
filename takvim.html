@@ -85,10 +85,10 @@
     let tournaments = [];
     let approvedProfiles = [];
 
-    // İstersen turnuva id'sine göre özel sayfa veya duyuru linki tanımlayabilirsin:
+    // Hazır olan turnuva sayfalarının linklerini buraya (veya Supabase tournaments tablosundaki details_url/url sütununa) ekleyebilirsin:
     const customTournamentLinks = {
       // 't1': 'https://www.tbricfed.org/...',
-      // 't2': 'turnuva-detay.html?id=t2'
+      // 't2': 'https://example.com/turnuva-programi'
     };
 
     const fallbackTournaments = [
@@ -105,7 +105,7 @@
         badge: 'YAKLAŞAN ORGANİZASYONLAR',
         title: 'Turnuva Takvimi',
         subtitle: 'Platformumuzda partnerlik planlaması yapılabilen güncel ulusal ve uluslararası turnuva programını inceleyin, turnuva detaylarına göz atın veya müsait profesyonellere ulaşın.',
-        btnDetails: 'Detaylar',
+        btnDetails: 'Detaylar ↗',
         btnFilter: 'Müsait Profesyonelleri Gör →',
         availCount: 'Müsait Profesyonel',
         footerNote: '© 2026 ProBridge Connect. Tüm görüşmeler gizlilik esasına göre doğrudan profesyonel ve sponsor arasında yürütülür.'
@@ -118,18 +118,18 @@
         badge: 'UPCOMING EVENTS',
         title: 'Tournament Calendar',
         subtitle: 'Explore the current schedule of national and international events open for partnership planning, check tournament details, or view available professionals.',
-        btnDetails: 'Details',
+        btnDetails: 'Details ↗',
         btnFilter: 'View Available Pros →',
         availCount: 'Available Pros',
         footerNote: '© 2026 ProBridge Connect. All discussions are conducted privately and directly between sponsor and professional.'
       }
     };
 
-    function getTournamentDetailsUrl(t) {
+    function getTournamentUrl(t) {
       if (t.details_url && t.details_url.trim()) return t.details_url.trim();
       if (t.url && t.url.trim()) return t.url.trim();
       if (customTournamentLinks[t.id]) return customTournamentLinks[t.id];
-      return `turnuva.html?id=${encodeURIComponent(t.id)}`;
+      return '';
     }
 
     function setLang(lang) {
@@ -169,10 +169,13 @@
         const parts = rawName.split('/');
         const eventTitle = parts[0].trim();
         const eventLocation = parts[1] ? parts[1].trim() : '';
-        const detailsHref = getTournamentDetailsUrl(t);
-        const isExternal = detailsHref.startsWith('http');
+        const tourUrl = getTournamentUrl(t);
 
         const count = approvedProfiles.filter(p => p.availability && p.availability[t.id] === true).length;
+
+        const detailsButtonHtml = tourUrl
+          ? `<a href="${tourUrl}" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-full border border-[#122921] text-[#122921] hover:bg-stone-100 text-xs font-medium transition text-center">${translations[currentLang].btnDetails}</a>`
+          : `<span class="px-4 py-2.5 rounded-full border border-stone-200 text-stone-400 text-xs font-medium text-center cursor-not-allowed">${translations[currentLang].btnDetails}</span>`;
 
         return `
           <div class="bg-white rounded-2xl border border-stone-200/90 hover:border-[#9E7E43]/60 p-6 sm:p-7 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition">
@@ -186,9 +189,7 @@
               </p>
             </div>
             <div class="flex flex-wrap items-center gap-2.5 shrink-0">
-              <a href="${detailsHref}" ${isExternal ? 'target="_blank" rel="noopener noreferrer"' : ''} class="px-4 py-2.5 rounded-full border border-[#122921] text-[#122921] hover:bg-stone-100 text-xs font-medium transition text-center">
-                ${translations[currentLang].btnDetails}
-              </a>
+              ${detailsButtonHtml}
               <a href="index.html?t=${t.id}" class="px-5 py-2.5 rounded-full emerald-bg text-white text-xs font-medium hover:opacity-95 transition text-center">
                 ${translations[currentLang].btnFilter}
               </a>
