@@ -36,9 +36,9 @@
 <body class="antialiased selection:bg-[#122921] selection:text-white">
 
   <!-- Üst Menü / Header -->
-  <header class="sticky top-0 z-40 bg-[#FAF9F6]/90 backdrop-blur-md border-b border-stone-200/80">
+  <header class="sticky top-0 z-40 bg-[#FAF9F6]/95 backdrop-blur-md border-b border-stone-200/80">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      <div class="flex items-center gap-3">
+      <a href="index.html" class="flex items-center gap-3">
         <div class="w-9 h-9 rounded-full emerald-bg flex items-center justify-center text-[#D4AF37] font-serif-luxury text-xl font-bold shadow-sm">
           ♠
         </div>
@@ -46,7 +46,15 @@
           <span class="font-serif-luxury text-2xl font-bold tracking-tight text-[#122921]">ProBridge</span>
           <span class="text-xs uppercase tracking-[0.2em] text-stone-500 ml-1.5 font-medium">Connect</span>
         </div>
-      </div>
+      </a>
+
+      <!-- Masaüstü Orta Menü -->
+      <nav class="hidden md:flex items-center gap-7 text-xs lg:text-sm font-medium text-stone-600">
+        <a href="index.html" class="text-[#122921] font-semibold border-b-2 border-[#9E7E43] pb-1" data-i18n="navHome">Ana Sayfa</a>
+        <a href="profesyonel-bric.html" class="hover:text-[#122921] transition" data-i18n="navProBridge">Profesyonel Briç Nedir?</a>
+        <a href="takvim.html" class="hover:text-[#122921] transition" data-i18n="navCalendar">Turnuva Takvimi</a>
+        <a href="hakkinda.html" class="hover:text-[#122921] transition" data-i18n="navAbout">Hakkımızda</a>
+      </nav>
 
       <div class="flex items-center gap-3 sm:gap-5">
         <!-- Dil Değiştirici -->
@@ -63,6 +71,14 @@
         </div>
       </div>
     </div>
+
+    <!-- Mobil Alt Menü -->
+    <nav class="md:hidden flex items-center gap-5 px-4 py-2.5 border-t border-stone-200/60 overflow-x-auto whitespace-nowrap text-xs font-medium text-stone-600">
+      <a href="index.html" class="text-[#122921] font-semibold" data-i18n="navHome">Ana Sayfa</a>
+      <a href="profesyonel-bric.html" class="hover:text-[#122921]" data-i18n="navProBridge">Profesyonel Briç Nedir?</a>
+      <a href="takvim.html" class="hover:text-[#122921]" data-i18n="navCalendar">Turnuva Takvimi</a>
+      <a href="hakkinda.html" class="hover:text-[#122921]" data-i18n="navAbout">Hakkımızda</a>
+    </nav>
   </header>
 
   <!-- Hero Bölümü -->
@@ -366,6 +382,10 @@
 
     const i18n = {
       tr: {
+        navHome: 'Ana Sayfa',
+        navProBridge: 'Profesyonel Briç Nedir?',
+        navCalendar: 'Turnuva Takvimi',
+        navAbout: 'Hakkımızda',
         navJoin: 'Profesyonel Girişi / Kayıt',
         navMyPanel: 'Profilim',
         heroBadge: 'PROFESYONEL BRİÇ PARTNERLİĞİ VE SPONSORLUK PLATFORMU',
@@ -379,6 +399,10 @@
         footerNote: '© 2026 ProBridge Connect. Tüm görüşmeler gizlilik esasına göre doğrudan profesyonel ve sponsor arasında yürütülür.'
       },
       en: {
+        navHome: 'Home',
+        navProBridge: 'What is Pro Bridge?',
+        navCalendar: 'Tournament Calendar',
+        navAbout: 'About Us',
         navJoin: 'Pro Login / Join',
         navMyPanel: 'My Profile',
         heroBadge: 'PROFESSIONAL BRIDGE PARTNERSHIP & SPONSORSHIP PLATFORM',
@@ -460,6 +484,7 @@
 
     function setLang(lang) {
       currentLang = lang;
+      localStorage.setItem('pbc_lang', lang);
       document.getElementById('btn-tr').className = lang === 'tr' ? 'px-3 py-1 rounded-full bg-[#122921] text-white transition' : 'px-3 py-1 rounded-full text-stone-600 hover:text-stone-900 transition';
       document.getElementById('btn-en').className = lang === 'en' ? 'px-3 py-1 rounded-full bg-[#122921] text-white transition' : 'px-3 py-1 rounded-full text-stone-600 hover:text-stone-900 transition';
 
@@ -485,6 +510,17 @@
     }
 
     async function initApp() {
+      const savedLang = localStorage.getItem('pbc_lang') || 'tr';
+      if (savedLang !== 'tr') {
+        currentLang = savedLang;
+        document.getElementById('btn-tr').className = 'px-3 py-1 rounded-full text-stone-600 hover:text-stone-900 transition';
+        document.getElementById('btn-en').className = 'px-3 py-1 rounded-full bg-[#122921] text-white transition';
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const key = el.getAttribute('data-i18n');
+          if (i18n[savedLang][key]) el.textContent = i18n[savedLang][key];
+        });
+      }
+
       try {
         const { data: tData, error: tErr } = await supabaseClient
           .from('tournaments')
@@ -498,6 +534,12 @@
         }
       } catch (e) {
         allTournaments = fallbackTournaments;
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlTour = urlParams.get('t');
+      if (urlTour) {
+        currentFilter = urlTour;
       }
 
       renderTournamentsUI();
