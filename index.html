@@ -656,7 +656,7 @@
                 ${renderAvatarHTML(player, 'w-14 h-14', 'text-lg')}
                 <div>
                   <h3 onclick="openProfileModal('${player.id}')" class="font-serif-luxury text-2xl font-semibold text-[#122921] hover:text-[#9E7E43] cursor-pointer transition leading-snug">${name}</h3>
-                  <p class="text-xs text-stone-500">${player.city || 'Türkiye'} ${player.bbo ? `• BBO: <span class="font-medium text-stone-700">${player.bbo}</span>` : ''}</p>
+                  <p class="text-xs text-stone-500">${formatTurkishTitleCase(player.city) || 'Türkiye'} ${player.bbo ? `• BBO: <span class="font-medium text-stone-700">${player.bbo}</span>` : ''}</p>
                 </div>
               </div>
             </div>
@@ -709,7 +709,7 @@
           <div>
             <h2 class="font-serif-luxury text-3xl font-semibold text-[#122921]">${name}</h2>
             <p class="text-xs gold-text font-semibold uppercase tracking-wider mt-1">${title}</p>
-            <p class="text-xs text-stone-500 mt-1">${player.city || 'Türkiye'} ${player.bbo ? `• BBO: <span class="font-medium text-stone-700">${player.bbo}</span>` : ''}</p>
+            <p class="text-xs text-stone-500 mt-1">${formatTurkishTitleCase(player.city) || 'Türkiye'} ${player.bbo ? `• BBO: <span class="font-medium text-stone-700">${player.bbo}</span>` : ''}</p>
           </div>
         </div>
 
@@ -819,7 +819,7 @@
       }
 
       const name = formatTurkishTitleCase(document.getElementById('reg-name').value);
-      const city = document.getElementById('reg-city').value;
+      const city = formatTurkishTitleCase(document.getElementById('reg-city').value);
       const title = document.getElementById('reg-title').value;
       const bbo = document.getElementById('reg-bbo').value;
       const whatsapp = document.getElementById('reg-whatsapp').value;
@@ -916,7 +916,7 @@
       const formattedName = formatTurkishTitleCase(currentUserProfile.name_tr || '');
       document.getElementById('dash-user-name').textContent = formattedName || 'Profesyonel';
       document.getElementById('edit-name').value = formattedName;
-      document.getElementById('edit-city').value = currentUserProfile.city || '';
+      document.getElementById('edit-city').value = formatTurkishTitleCase(currentUserProfile.city || '');
       document.getElementById('edit-title').value = currentUserProfile.title_tr || '';
       document.getElementById('edit-whatsapp').value = currentUserProfile.whatsapp || '';
       document.getElementById('edit-system').value = currentUserProfile.system || '';
@@ -954,7 +954,7 @@
       msg.classList.add('hidden');
 
       const name = formatTurkishTitleCase(document.getElementById('edit-name').value);
-      const city = document.getElementById('edit-city').value;
+      const city = formatTurkishTitleCase(document.getElementById('edit-city').value);
       const title = document.getElementById('edit-title').value;
       const whatsapp = document.getElementById('edit-whatsapp').value;
       const system = document.getElementById('edit-system').value;
