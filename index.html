@@ -1344,7 +1344,7 @@
         return words.some(w => w.startsWith(playerSearchQuery));
       });
 
-      const captionEl = document.getElementById('active-filter-caption');
+      const getAvailabilityCount = (player) => {         const avail = player.availability;         if (!avail || typeof avail !== 'object') return 0;         return Object.values(avail).filter(val => val === true).length;       };        filtered.sort((a, b) => {         const diff = getAvailabilityCount(b) - getAvailabilityCount(a);         if (diff !== 0) return diff;         return new Date(a.created_at || 0) - new Date(b.created_at || 0);       });        const captionEl = document.getElementById('active-filter-caption');
       if (captionEl) {
         if (currentFilter === 'all') {
           captionEl.textContent = currentLang === 'tr'
